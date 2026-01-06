@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
 
 const SESSION_DURATION_SECONDS = 180; // 3 minutes
@@ -134,6 +135,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     color: Colors.white,
     opacity: 0.9,
+    fontFamily: Fonts.slackside,
   },
   messageOverlay: {
     position: "absolute",
@@ -152,11 +154,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: Responsive.xl,
     paddingVertical: Responsive.v.md,
     borderRadius: Responsive.r.lg,
+    fontFamily: Fonts.avenir.heavy,
   },
   permissionText: {
     fontSize: Responsive.f.lg,
     color: Colors.white,
     textAlign: "center",
     padding: Responsive.xl,
+    fontFamily: Fonts.avenir.heavy,
   },
 });

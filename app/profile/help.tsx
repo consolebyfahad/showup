@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Button, Header } from "../../components/common";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
 
 export default function HelpFeedback() {
@@ -166,12 +167,14 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.black,
     marginBottom: Responsive.v.md,
+    fontFamily: Fonts.avenir.heavy,
   },
   sectionDescription: {
     fontSize: Responsive.f.md,
     color: Colors.textSecondary,
     marginBottom: Responsive.v.lg,
     lineHeight: Responsive.f.md * 1.5,
+    fontFamily: Fonts.slackside,
   },
   faqItem: {
     marginBottom: Responsive.v.lg,
@@ -193,12 +196,14 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "600",
     color: Colors.black,
+    fontFamily: Fonts.avenir.regular,
   },
   faqAnswer: {
     fontSize: Responsive.f.sm,
     color: Colors.textSecondary,
     lineHeight: Responsive.f.sm * 1.5,
     marginLeft: Responsive.v.xxl + Responsive.sm,
+    fontFamily: Fonts.slackside,
   },
   textInput: {
     borderWidth: 1,
@@ -209,6 +214,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
     minHeight: rVerticalScale(120),
     marginBottom: Responsive.v.lg,
+    fontFamily: Fonts.slackside,
   },
   buttonContainer: {
     marginBottom: Responsive.v.lg,
@@ -223,11 +229,13 @@ const styles = StyleSheet.create({
     color: Colors.black,
     marginTop: Responsive.v.md,
     marginBottom: Responsive.v.xs,
+    fontFamily: Fonts.avenir.heavy,
   },
   successSubtext: {
     fontSize: Responsive.f.md,
     color: Colors.textSecondary,
     textAlign: "center",
+    fontFamily: Fonts.slackside,
   },
   contactItem: {
     flexDirection: "row",
@@ -242,5 +250,6 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     marginLeft: Responsive.md,
     fontWeight: "500",
+    fontFamily: Fonts.avenir.regular,
   },
 });

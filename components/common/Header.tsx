@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale } from "../../utils/responsive";
 
 interface HeaderProps {
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xl,
     fontWeight: "700",
     color: Colors.black,
+    fontFamily: Fonts.avenir.heavy,
   },
   rightButton: {
     padding: Responsive.sm,
@@ -106,5 +108,6 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "600",
     color: Colors.primary,
+    fontFamily: Fonts.slackside,
   },
 });

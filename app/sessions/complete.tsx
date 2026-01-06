@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "../../components/common";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale } from "../../utils/responsive";
 import { incrementVisionBoardProgress } from "../../utils/visionBoard";
 
@@ -134,12 +135,14 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     textAlign: "center",
     marginBottom: Responsive.v.sm,
+    fontFamily: Fonts.avenir.heavy,
   },
   subtitle: {
     fontSize: Responsive.f.xl,
     color: Colors.textSecondary,
     textAlign: "center",
     marginBottom: Responsive.v.xxl,
+    fontFamily: Fonts.slackside,
   },
   emojiContainer: {
     flexDirection: "row",
@@ -170,6 +173,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.sm,
     color: Colors.textSecondary,
     fontWeight: "500",
+    fontFamily: Fonts.slackside,
   },
   emojiLabelSelected: {
     color: Colors.primary,
@@ -187,6 +191,7 @@ const styles = StyleSheet.create({
     color: Colors.darkGray,
     textAlign: "center",
     lineHeight: Responsive.f.md * 1.5,
+    fontFamily: Fonts.slackside,
   },
   buttonContainer: {
     paddingHorizontal: Responsive.xl,

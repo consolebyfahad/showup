@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
 
 const PROFILE_STORAGE_KEY = "@yo_twin_user_profile";
@@ -146,18 +147,21 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xxxl * 1.5,
     fontWeight: "700",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.heavy,
   },
   callerName: {
     fontSize: Responsive.f.xxxl * 1.5,
     fontWeight: "700",
     color: Colors.white,
     marginBottom: Responsive.v.sm,
+    fontFamily: Fonts.avenir.heavy,
   },
   callSubtext: {
     fontSize: Responsive.f.lg,
     color: Colors.white,
     opacity: 0.9,
     marginBottom: Responsive.v.xl,
+    fontFamily: Fonts.slackside,
   },
   videoIndicator: {
     flexDirection: "row",
@@ -172,6 +176,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     color: Colors.white,
     opacity: 0.9,
+    fontFamily: Fonts.slackside,
   },
   answerButton: {
     alignItems: "center",
@@ -198,5 +203,6 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xl,
     fontWeight: "700",
     color: Colors.white,
+    fontFamily: Fonts.avenir.heavy,
   },
 });

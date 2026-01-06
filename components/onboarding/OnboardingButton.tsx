@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive } from "../../utils/responsive";
 
 interface OnboardingButtonProps {
@@ -44,5 +45,6 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: Responsive.f.xl,
     fontWeight: "600",
+    fontFamily: Fonts.avenir.heavy,
   },
 });

@@ -1,54 +1,41 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive } from "../../utils/responsive";
-import { TroublingArea } from "../../types/onboarding";
 
 interface Screen2Props {
-  selectedAreas: TroublingArea[];
-  primaryFocus: TroublingArea | null;
-  onSelectFocus: (area: TroublingArea) => void;
+  habits: string[];
+  primaryFocus: string | null;
+  onSelectFocus: (habit: string) => void;
 }
 
 export default function Screen2({
-  selectedAreas,
+  habits,
   primaryFocus,
   onSelectFocus,
 }: Screen2Props) {
-  const getTagColor = (area: TroublingArea, isSelected: boolean) => {
-    if (isSelected) {
-      switch (area) {
-        case "academics":
-          return Colors.tagBlue;
-        case "weight loss":
-          return Colors.tagGreen;
-        case "relationships":
-          return Colors.tagOrange;
-        default:
-          return Colors.lightGray;
-      }
-    }
-    return Colors.lightGray;
-  };
+  // Filter out empty habits
+  const validHabits = habits.filter((habit) => habit.trim().length > 0);
 
   return (
     <View style={styles.container}>
       <Text style={styles.questionText}>
-        I feel you — but let's just pick one we can help you with.
+        I feel you - but{'\n'}let's just pick one{'\n'}that we can help{'\n'}you with
       </Text>
       <View style={styles.optionsContainer}>
-        {selectedAreas.map((area) => {
-          const isSelected = primaryFocus === area;
+        {validHabits.map((habit, index) => {
+          const isSelected = primaryFocus === habit;
           return (
             <TouchableOpacity
-              key={area}
+              key={index}
               style={[
                 styles.optionButton,
-                { backgroundColor: getTagColor(area, isSelected) },
+                isSelected && styles.optionButtonSelected,
               ]}
-              onPress={() => onSelectFocus(area)}
+              onPress={() => onSelectFocus(habit)}
             >
-              <Text style={styles.optionText}>{area}</Text>
+              <Text style={styles.optionText}>{habit}</Text>
             </TouchableOpacity>
           );
         })}
@@ -68,6 +55,8 @@ const styles = StyleSheet.create({
     color: Colors.black,
     marginBottom: Responsive.v.xxl,
     lineHeight: Responsive.f.xxxl * 1.3,
+    fontFamily: Fonts.avenir.heavy,
+    textAlign: "center",
   },
   optionsContainer: {
     gap: Responsive.g.lg,
@@ -78,12 +67,19 @@ const styles = StyleSheet.create({
     paddingVertical: Responsive.v.lg,
     borderRadius: Responsive.r.md,
     width: "100%",
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+  },
+  optionButtonSelected: {
+    borderColor: Colors.primary,
+    borderWidth: 2,
   },
   optionText: {
-    color: Colors.white,
-    fontSize: Responsive.f.xl,
-    fontWeight: "500",
+    color: Colors.black,
+    fontSize: Responsive.f.lg,
     textAlign: "center",
+    fontFamily: Fonts.slackside,
   },
 });
 

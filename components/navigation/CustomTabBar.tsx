@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale } from "../../utils/responsive";
 
 export default function CustomTabBar({
@@ -54,6 +55,8 @@ export default function CustomTabBar({
               return "home";
             case "calendar":
               return "calendar";
+            case "album":
+              return "image";
             case "profile":
               return "person";
             default:
@@ -132,9 +135,11 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: Colors.gray,
     marginTop: Responsive.v.xs,
+    fontFamily: Fonts.slackside,
   },
   tabLabelActive: {
     fontWeight: "700",
     color: Colors.primary,
+    fontFamily: Fonts.slackside,
   },
 });

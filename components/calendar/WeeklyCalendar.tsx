@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
 
 interface Session {
@@ -290,11 +291,12 @@ export default function WeeklyCalendar({
                             if (session) {
                               setSelectedSession(session);
                               onSessionPress?.(session);
-                            } else {
-                              onTimeSlotPress?.(dayIndex, time);
                             }
+                            // Empty time slots should not be clickable
+                            // Only allow adding sessions via the plus icon
                           }}
-                          activeOpacity={0.7}
+                          activeOpacity={session ? 0.7 : 1}
+                          disabled={!session}
                         >
                           {session && (
                             <View
@@ -533,6 +535,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "700",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.heavy,
   },
   headerRight: {
     flexDirection: "row",
@@ -553,6 +556,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     minWidth: rScale(120),
     textAlign: "center",
+    fontFamily: Fonts.avenir.regular,
   },
   scrollView: {
     flex: 1,
@@ -580,6 +584,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.primary,
     textAlign: "center",
+    fontFamily: Fonts.slackside,
   },
   timeSlot: {
     height: 60,
@@ -595,6 +600,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xs,
     fontWeight: "500",
     color: Colors.textSecondary,
+    fontFamily: Fonts.slackside,
   },
   daysGrid: {
     flex: 1,
@@ -623,6 +629,7 @@ const styles = StyleSheet.create({
     marginBottom: Responsive.v.xs,
     textTransform: "uppercase",
     letterSpacing: 0.5,
+    fontFamily: Fonts.slackside,
   },
   dayNameToday: {
     color: Colors.primary,
@@ -641,6 +648,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "700",
     color: Colors.black,
+    fontFamily: Fonts.avenir.heavy,
   },
   dayNumberToday: {
     color: Colors.white,
@@ -683,11 +691,13 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.white,
     marginBottom: Responsive.v.xs / 2,
+    fontFamily: Fonts.slackside,
   },
   sessionTitle: {
     fontSize: Responsive.f.xs,
     color: Colors.white,
     fontWeight: "500",
+    fontFamily: Fonts.slackside,
   },
   tooltipOverlay: {
     position: "absolute",
@@ -736,6 +746,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.lg,
     fontWeight: "700",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.heavy,
   },
   tooltipCloseButton: {
     width: rScale(32),
@@ -750,6 +761,7 @@ const styles = StyleSheet.create({
     color: Colors.darkGray,
     fontWeight: "600",
     marginBottom: Responsive.v.lg,
+    fontFamily: Fonts.avenir.regular,
   },
   tooltipActions: {
     flexDirection: "row",
@@ -770,6 +782,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "600",
     color: Colors.white,
+    fontFamily: Fonts.avenir.heavy,
   },
   tooltipButtonTextSecondary: {
     color: Colors.darkGray,
@@ -806,6 +819,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xl,
     fontWeight: "700",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.heavy,
   },
   closeButton: {
     width: rScale(32),
@@ -828,6 +842,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.primary,
     marginBottom: Responsive.v.md,
+    fontFamily: Fonts.avenir.regular,
   },
   yearGrid: {
     flexDirection: "row",
@@ -849,6 +864,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "600",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.regular,
   },
   yearButtonTextSelected: {
     color: Colors.white,
@@ -861,6 +877,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.primary,
     marginBottom: Responsive.v.md,
+    fontFamily: Fonts.avenir.regular,
   },
   monthGrid: {
     gap: Responsive.xs,
@@ -882,9 +899,11 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "500",
     color: Colors.darkGray,
+    fontFamily: Fonts.avenir.regular,
   },
   monthItemTextSelected: {
     color: Colors.primary,
     fontWeight: "700",
+    fontFamily: Fonts.avenir.heavy,
   },
 });

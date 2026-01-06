@@ -1,13 +1,18 @@
 /**
  * Yo Twin Color Palette
+ * Main colors for the App
  * Modern SaaS / ed-tech aesthetic
  * Calm, supportive, non-judgmental tone
  */
 
 export const Colors = {
-  primary: "#13204B",
-  secondary: "#392695",
-  backgroundAccent: "#C5D3F4",
+  // Main palette colors
+  primary: "#13294B", // Very dark navy blue
+  secondary: "#392695", // Dark indigo/deep purple
+  backgroundAccent: "#C5D3F4", // Light periwinkle/pale blue-violet
+  cream: "#FDEEB3", // Light cream/pale yellow
+  
+  // CTA and highlights
   ctaHighlight: "#FD6E53", // CTA Highlight color (orange/coral - matches design)
   
   // Additional colors for UI

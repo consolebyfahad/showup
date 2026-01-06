@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
 import {
   getAllVisionBoards,
@@ -162,10 +163,12 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.primary,
     marginBottom: Responsive.v.xs,
+    fontFamily: Fonts.avenir.heavy,
   },
   subtitle: {
     fontSize: Responsive.f.sm,
     color: Colors.textSecondary,
+    fontFamily: Fonts.slackside,
   },
   loadingContainer: {
     flex: 1,
@@ -175,6 +178,7 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: Responsive.f.md,
     color: Colors.textSecondary,
+    fontFamily: Fonts.slackside,
   },
   emptyContainer: {
     flex: 1,
@@ -187,11 +191,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.darkGray,
     marginBottom: Responsive.v.sm,
+    fontFamily: Fonts.avenir.heavy,
   },
   emptySubtext: {
     fontSize: Responsive.f.md,
     color: Colors.textSecondary,
     textAlign: "center",
+    fontFamily: Fonts.slackside,
   },
   listContent: {
     padding: Responsive.md,
@@ -249,15 +255,21 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: Responsive.sm,
     right: Responsive.sm,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
-    paddingHorizontal: Responsive.sm,
+    backgroundColor: Colors.primary,
+    paddingHorizontal: Responsive.md,
     paddingVertical: Responsive.v.xs,
-    borderRadius: Responsive.r.sm,
+    borderRadius: Responsive.r.md,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
   },
   statusText: {
     fontSize: Responsive.f.xs,
     color: Colors.white,
     fontWeight: "600",
+    fontFamily: Fonts.avenir.heavy,
   },
   boardInfo: {
     padding: Responsive.md,
@@ -267,10 +279,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.primary,
     marginBottom: Responsive.v.xs / 2,
+    fontFamily: Fonts.avenir.regular,
   },
   progressText: {
     fontSize: Responsive.f.xs,
     color: Colors.textSecondary,
+    fontFamily: Fonts.slackside,
   },
 });
 

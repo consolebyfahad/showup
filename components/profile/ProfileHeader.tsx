@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale } from "../../utils/responsive";
 
 export default function ProfileHeader() {
@@ -46,6 +47,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: Responsive.f.xl,
     fontWeight: "700",
+    fontFamily: Fonts.avenir.heavy,
   },
   titleShow: {
     color: Colors.black,

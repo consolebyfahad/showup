@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale } from "../../utils/responsive";
 
 interface MenuCardProps {
@@ -18,10 +19,9 @@ export default function MenuCard({ icon, title, onPress }: MenuCardProps) {
       </View>
       <Text style={styles.title}>{title}</Text>
       <Ionicons
-        name="chevron-down"
+        name="chevron-forward"
         size={rScale(20)}
         color={Colors.gray}
-        style={styles.chevron}
       />
     </TouchableOpacity>
   );
@@ -50,9 +50,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "500",
     color: Colors.black,
-  },
-  chevron: {
-    transform: [{ rotate: "-90deg" }],
+    fontFamily: Fonts.avenir.regular,
   },
 });
 

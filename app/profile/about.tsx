@@ -3,6 +3,7 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Header } from "../../components/common";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale } from "../../utils/responsive";
 
 export default function AboutYoTwin() {
@@ -143,6 +144,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xxxl + Responsive.f.lg,
     fontWeight: "700",
     marginBottom: Responsive.v.sm,
+    fontFamily: Fonts.avenir.black,
   },
   logoShow: {
     color: Colors.black,
@@ -154,6 +156,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     color: Colors.textSecondary,
     fontStyle: "italic",
+    fontFamily: Fonts.slackside,
   },
   section: {
     marginBottom: Responsive.v.xxl,
@@ -163,11 +166,13 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.black,
     marginBottom: Responsive.v.md,
+    fontFamily: Fonts.avenir.heavy,
   },
   sectionText: {
     fontSize: Responsive.f.md,
     color: Colors.darkGray,
     lineHeight: Responsive.f.md * 1.6,
+    fontFamily: Fonts.slackside,
   },
   featureItem: {
     flexDirection: "row",
@@ -185,14 +190,17 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.black,
     marginBottom: Responsive.v.xs,
+    fontFamily: Fonts.avenir.regular,
   },
   featureDescription: {
     fontSize: Responsive.f.sm,
     color: Colors.textSecondary,
     lineHeight: Responsive.f.sm * 1.5,
+    fontFamily: Fonts.slackside,
   },
   versionText: {
     fontSize: Responsive.f.md,
     color: Colors.textSecondary,
+    fontFamily: Fonts.slackside,
   },
 });

@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
 import { getWeeklyQuote, saveWeeklyQuote } from "../../utils/weeklyQuote";
 
@@ -155,6 +156,7 @@ const styles = StyleSheet.create({
     marginTop: Responsive.v.lg,
     marginBottom: Responsive.v.md,
     textAlign: "center",
+    fontFamily: Fonts.avenir.heavy,
   },
   inputContainer: {
     flexDirection: "row",
@@ -174,6 +176,7 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     minHeight: rVerticalScale(80),
     textAlignVertical: "top",
+    fontFamily: Fonts.slackside,
   },
   quoteContainer: {
     flexDirection: "row",
@@ -186,5 +189,6 @@ const styles = StyleSheet.create({
     color: Colors.darkGray,
     fontStyle: "italic",
     lineHeight: Responsive.f.md * 1.5,
+    fontFamily: Fonts.slackside,
   },
 });

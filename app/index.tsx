@@ -34,9 +34,9 @@ export default function Index() {
     );
   }
 
-  if (hasCompletedOnboarding) {
-    return <Redirect href="/(tabs)" />;
-  }
+  // if (hasCompletedOnboarding) {
+  //   return <Redirect href="/(tabs)" />;
+  // }
 
   return <Redirect href="/auth/onboarding" />;
 }

@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Header } from "../../components/common";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale } from "../../utils/responsive";
 
 export default function Subscription() {
@@ -188,6 +189,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xl,
     fontWeight: "700",
     color: Colors.black,
+    fontFamily: Fonts.avenir.heavy,
   },
   badge: {
     backgroundColor: Colors.backgroundAccent,
@@ -204,6 +206,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     color: Colors.textSecondary,
     lineHeight: Responsive.f.md * 1.5,
+    fontFamily: Fonts.slackside,
   },
   premiumCard: {
     marginHorizontal: Responsive.xl,
@@ -230,6 +233,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.white,
     marginBottom: Responsive.v.sm,
+    fontFamily: Fonts.avenir.heavy,
   },
   priceContainer: {
     flexDirection: "row",
@@ -239,12 +243,14 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xxxl + Responsive.f.lg,
     fontWeight: "700",
     color: Colors.white,
+    fontFamily: Fonts.avenir.heavy,
   },
   pricePeriod: {
     fontSize: Responsive.f.md,
     color: Colors.white,
     opacity: 0.9,
     marginLeft: Responsive.xs,
+    fontFamily: Fonts.slackside,
   },
   featuresList: {
     marginBottom: Responsive.v.xl,
@@ -259,6 +265,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     marginLeft: Responsive.md,
     fontWeight: "500",
+    fontFamily: Fonts.avenir.regular,
   },
   buttonContainer: {
     marginTop: Responsive.v.md,
@@ -279,6 +286,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.lg,
     fontWeight: "700",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.heavy,
   },
   section: {
     paddingHorizontal: Responsive.xl,
@@ -289,6 +297,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.black,
     marginBottom: Responsive.v.lg,
+    fontFamily: Fonts.avenir.heavy,
   },
   benefitItem: {
     flexDirection: "row",
@@ -313,11 +322,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.black,
     marginBottom: Responsive.v.xs,
+    fontFamily: Fonts.avenir.regular,
   },
   benefitDescription: {
     fontSize: Responsive.f.sm,
     color: Colors.textSecondary,
     lineHeight: Responsive.f.sm * 1.5,
+    fontFamily: Fonts.slackside,
   },
   termsSection: {
     paddingHorizontal: Responsive.xl,
@@ -329,5 +340,6 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     textAlign: "center",
     lineHeight: Responsive.f.xs * 1.5,
+    fontFamily: Fonts.slackside,
   },
 });

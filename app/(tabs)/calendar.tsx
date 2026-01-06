@@ -1,9 +1,18 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  Pressable,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import WeeklyCalendar from "../../components/calendar/WeeklyCalendar";
 import { Colors } from "../../constants/colors";
-import { Responsive } from "../../utils/responsive";
+import { Fonts } from "../../constants/fonts";
+import { Responsive, rScale } from "../../utils/responsive";
 import {
   Session,
   getAllSessions,
@@ -29,6 +38,7 @@ export default function Calendar() {
   const router = useRouter();
   const [sessions, setSessions] = useState<CalendarSession[]>([]);
   const [currentWeek, setCurrentWeek] = useState(new Date());
+  const [showAddMenu, setShowAddMenu] = useState(false);
 
   const loadSessions = useCallback(async () => {
     try {
@@ -72,35 +82,36 @@ export default function Calendar() {
     }, [loadSessions])
   );
 
-  const handleSessionPress = (session: CalendarSession) => {
+  const handleSessionPress = (session: {
+    id: string;
+    day: number;
+    time: string;
+    title?: string;
+    color?: string;
+  }) => {
     // Show edit/delete options (handled by WeeklyCalendar tooltip)
+    // The tooltip will handle showing Edit/Delete buttons
+    // No need to navigate immediately
   };
 
   const handleTimeSlotPress = (day: number, time: string) => {
-    // Get the actual date for this day in the current week
-    const date = new Date(currentWeek);
-    const currentDay = date.getDay();
-    const diff = date.getDate() - currentDay + (currentDay === 0 ? -6 : 1);
-    const monday = new Date(date.setDate(diff));
-    const targetDate = new Date(monday);
-    targetDate.setDate(monday.getDate() + day);
-
-    router.push({
-      pathname: "/sessions/add-edit",
-      params: {
-        date: formatDate(targetDate),
-        time: time,
-      },
-    });
+    // Empty time slots should not open the session screen
+    // Only allow adding sessions via the plus icon
+    // Do nothing when clicking empty time slots
+    return;
   };
 
-  const handleEditSession = (session: CalendarSession) => {
+  const handleEditSession = (session: CalendarSession | { id: string }) => {
     router.push({
       pathname: "/sessions/add-edit",
       params: {
         sessionId: session.id,
       },
     });
+  };
+
+  const handleDeleteSessionWrapper = async (sessionId: string) => {
+    await handleDeleteSession(sessionId);
   };
 
   const handleDeleteSession = async (sessionId: string) => {
@@ -112,25 +123,154 @@ export default function Calendar() {
     }
   };
 
+  const handleAddTask = () => {
+    setShowAddMenu(false);
+    router.push("/sessions/add-edit");
+  };
+
+  const handleAddHabit = () => {
+    setShowAddMenu(false);
+    // Navigate to habit creation flow
+    // For now, we'll create a simple habit flow similar to task
+    router.push("/sessions/add-edit?type=habit");
+  };
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top"]}>
       <WeeklyCalendar
-        sessions={sessions}
+        sessions={sessions.map((s) => ({
+          id: s.id,
+          day: s.day,
+          time: s.time,
+          title: s.title,
+          color: s.color,
+        }))}
         onSessionPress={handleSessionPress}
         onTimeSlotPress={handleTimeSlotPress}
-        onEditSession={handleEditSession}
-        onDeleteSession={handleDeleteSession}
+        onEditSession={(session) => {
+          // Use the session directly - we only need the ID for navigation
+          handleEditSession(session);
+        }}
+        onDeleteSession={handleDeleteSessionWrapper}
         currentWeek={currentWeek}
         onWeekChange={setCurrentWeek}
       />
-    </View>
+
+      {/* Floating Action Button */}
+      <View style={styles.fabContainer}>
+        <TouchableOpacity
+          style={styles.fabButton}
+          onPress={() => setShowAddMenu(!showAddMenu)}
+          activeOpacity={0.8}
+        >
+          <Ionicons
+            name={showAddMenu ? "close" : "add"}
+            size={rScale(28)}
+            color={Colors.white}
+          />
+        </TouchableOpacity>
+      </View>
+
+      {/* Add Menu Modal - Floating Menu */}
+      {showAddMenu && (
+        <View style={styles.menuOverlay}>
+          <Pressable
+            style={styles.menuBackdrop}
+            onPress={() => setShowAddMenu(false)}
+          />
+          <View style={styles.menuContainer}>
+            <TouchableOpacity
+              style={[styles.menuItem, styles.menuItemHabit]}
+              onPress={handleAddHabit}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.menuItemText}>Add Habit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.menuItem, styles.menuItemTask]}
+              onPress={handleAddTask}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.menuItemText}>Add task</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Responsive.v.xxxl,
     flex: 1,
     backgroundColor: Colors.white,
+  },
+  fabContainer: {
+    position: "absolute",
+    bottom: Responsive.v.xxl + Responsive.v.lg,
+    right: Responsive.xl,
+    zIndex: 1000,
+  },
+  fabButton: {
+    width: rScale(56),
+    height: rScale(56),
+    borderRadius: rScale(28),
+    backgroundColor: Colors.primary,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  menuOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 999,
+  },
+  menuBackdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+  },
+  menuContainer: {
+    position: "absolute",
+    bottom: Responsive.v.xxl + Responsive.v.lg + rScale(56) + Responsive.v.md,
+    right: Responsive.xl,
+    backgroundColor: Colors.white,
+    borderRadius: Responsive.r.lg,
+    paddingVertical: Responsive.v.sm,
+    minWidth: rScale(180),
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 12,
+    // Arrow pointing down to button
+    borderBottomRightRadius: Responsive.r.sm,
+  },
+  menuItem: {
+    paddingVertical: Responsive.v.lg,
+    paddingHorizontal: Responsive.xl,
+    borderRadius: Responsive.r.md,
+    marginHorizontal: Responsive.sm,
+    marginVertical: Responsive.v.xs,
+    minWidth: rScale(160),
+    alignItems: "center",
+  },
+  menuItemTask: {
+    backgroundColor: Colors.cream, // Light yellow/cream
+  },
+  menuItemHabit: {
+    backgroundColor: Colors.backgroundAccent, // Light purple/blue
+  },
+  menuItemText: {
+    fontSize: Responsive.f.md,
+    fontWeight: "600",
+    color: Colors.black,
+    fontFamily: Fonts.avenir.regular,
   },
 });

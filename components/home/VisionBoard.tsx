@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
 import {
   getCurrentVisionBoard,
@@ -150,6 +151,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     marginBottom: Responsive.v.md,
     textAlign: "center",
+    fontFamily: Fonts.avenir.heavy,
   },
   imageContainer: {
     borderRadius: Responsive.r.lg,
@@ -215,6 +217,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontWeight: "600",
     textAlign: "center",
+    fontFamily: Fonts.slackside,
   },
   placeholderContainer: {
     height: rVerticalScale(300),
@@ -228,6 +231,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     color: Colors.textSecondary,
     textAlign: "center",
+    fontFamily: Fonts.slackside,
   },
 });
 

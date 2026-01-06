@@ -7,12 +7,14 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "../../components/common";
 import { Header } from "../../components/common";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive } from "../../utils/responsive";
 import {
   Session,
@@ -294,8 +296,6 @@ export default function AddEditSession() {
   );
 }
 
-import { TouchableOpacity } from "react-native";
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -315,6 +315,7 @@ const styles = StyleSheet.create({
     color: Colors.darkGray,
     lineHeight: Responsive.f.md * 1.5,
     marginBottom: Responsive.v.xl,
+    fontFamily: Fonts.slackside,
   },
   inputSection: {
     marginBottom: Responsive.v.xl,
@@ -324,6 +325,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.black,
     marginBottom: Responsive.v.sm,
+    fontFamily: Fonts.avenir.regular,
   },
   dateDisplay: {
     backgroundColor: Colors.backgroundAccent,
@@ -335,11 +337,13 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "600",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.regular,
   },
   hint: {
     fontSize: Responsive.f.sm,
     color: Colors.textSecondary,
     fontStyle: "italic",
+    fontFamily: Fonts.slackside,
   },
   timePicker: {
     flexDirection: "row",
@@ -355,6 +359,7 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     marginBottom: Responsive.v.sm,
     textAlign: "center",
+    fontFamily: Fonts.slackside,
   },
   timeScroll: {
     flex: 1,
@@ -375,9 +380,11 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "600",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.regular,
   },
   timeOptionTextSelected: {
     color: Colors.white,
+    fontFamily: Fonts.avenir.heavy,
   },
   periodContainer: {
     gap: Responsive.v.sm,
@@ -397,6 +404,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "700",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.heavy,
   },
   periodButtonTextSelected: {
     color: Colors.white,
@@ -409,6 +417,7 @@ const styles = StyleSheet.create({
     padding: Responsive.lg,
     fontSize: Responsive.f.md,
     color: Colors.black,
+    fontFamily: Fonts.slackside,
   },
   buttonContainer: {
     padding: Responsive.xl,

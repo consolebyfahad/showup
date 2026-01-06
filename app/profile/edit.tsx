@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { Header } from "../../components/common";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
 
 const PROFILE_STORAGE_KEY = "@yo_twin_user_profile";
@@ -29,7 +30,7 @@ interface UserProfile {
 
 export default function ProfileEdit() {
   const router = useRouter();
-  const [name, setName] = useState("Sarah Chen");
+  const [name, setName] = useState("Achiever ⭐");
   const [birthday, setBirthday] = useState<Date | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -44,7 +45,7 @@ export default function ProfileEdit() {
       const profileJson = await AsyncStorage.getItem(PROFILE_STORAGE_KEY);
       if (profileJson) {
         const profile: UserProfile = JSON.parse(profileJson);
-        setName(profile.name || "Sarah Chen");
+        setName(profile.name || "Achiever ⭐");
         if (profile.birthday) {
           setBirthday(new Date(profile.birthday));
         }
@@ -275,6 +276,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xxxl,
     fontWeight: "700",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.heavy,
   },
   editIconContainer: {
     position: "absolute",
@@ -292,6 +294,7 @@ const styles = StyleSheet.create({
   imageHint: {
     fontSize: Responsive.f.sm,
     color: Colors.textSecondary,
+    fontFamily: Fonts.slackside,
   },
   inputSection: {
     paddingHorizontal: Responsive.xl,
@@ -302,6 +305,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.black,
     marginBottom: Responsive.v.sm,
+    fontFamily: Fonts.avenir.regular,
   },
   input: {
     backgroundColor: Colors.white,
@@ -311,6 +315,7 @@ const styles = StyleSheet.create({
     padding: Responsive.lg,
     fontSize: Responsive.f.md,
     color: Colors.black,
+    fontFamily: Fonts.avenir.regular,
   },
   dateButton: {
     flexDirection: "row",
@@ -325,6 +330,7 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: Responsive.f.md,
     color: Colors.black,
+    fontFamily: Fonts.avenir.regular,
   },
   dateTextPlaceholder: {
     color: Colors.gray,
@@ -357,11 +363,13 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     color: Colors.gray,
     fontWeight: "500",
+    fontFamily: Fonts.slackside,
   },
   datePickerTitle: {
     fontSize: Responsive.f.lg,
     fontWeight: "600",
     color: Colors.black,
+    fontFamily: Fonts.avenir.heavy,
   },
   doneButton: {
     paddingVertical: Responsive.v.sm,
@@ -371,6 +379,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     color: Colors.primary,
     fontWeight: "600",
+    fontFamily: Fonts.avenir.regular,
   },
   datePickerContainer: {
     alignItems: "center",

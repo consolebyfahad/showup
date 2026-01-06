@@ -16,6 +16,7 @@ import {
   WeeklyStreak,
 } from "../../components/home";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale } from "../../utils/responsive";
 
 const PROFILE_STORAGE_KEY = "@yo_twin_user_profile";
@@ -40,7 +41,7 @@ export default function Home() {
         setProfileData(profile);
       } else {
         setProfileData({
-          name: "Sarah Chen",
+          name: "Achiever ⭐",
           birthday: null,
           profileImage: null,
         });
@@ -48,7 +49,7 @@ export default function Home() {
     } catch (error) {
       console.error("Error loading profile data:", error);
       setProfileData({
-        name: "Sarah Chen",
+        name: "Achiever ⭐",
         birthday: null,
         profileImage: null,
       });
@@ -129,11 +130,13 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.sm,
     color: Colors.textSecondary,
     marginBottom: Responsive.v.xs / 2,
+    fontFamily: Fonts.slackside,
   },
   userName: {
     fontSize: Responsive.f.xl,
     fontWeight: "700",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.heavy,
   },
   profileImageContainer: {
     marginLeft: Responsive.md,
@@ -158,6 +161,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "700",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.heavy,
   },
   scrollView: {
     flex: 1,

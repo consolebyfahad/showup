@@ -44,7 +44,7 @@ export default function Profile() {
       } else {
         // Default profile if none exists
         setProfileData({
-          name: "Sarah Chen",
+          name: "Achiever ⭐",
           birthday: null,
           profileImage: null,
         });
@@ -61,7 +61,7 @@ export default function Profile() {
     } catch (error) {
       console.error("Error loading profile data:", error);
       setProfileData({
-        name: "Sarah Chen",
+        name: "Achiever ⭐",
         birthday: null,
         profileImage: null,
       });
@@ -89,7 +89,7 @@ export default function Profile() {
         showsVerticalScrollIndicator={false}
       >
         <ProfileInfo
-          name={profileData?.name || "Sarah Chen"}
+          name={profileData?.name || "Achiever ⭐"}
           memberSince={memberSince}
           profileImage={profileData?.profileImage || undefined}
           onImagePress={() => router.push("/profile/edit")}

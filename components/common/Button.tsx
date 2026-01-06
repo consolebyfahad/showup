@@ -8,6 +8,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive } from "../../utils/responsive";
 
 type ButtonVariant = "primary" | "secondary" | "danger" | "outline" | "ghost";
@@ -153,5 +154,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: "600",
+    fontFamily: Fonts.avenir.heavy,
   },
 });

@@ -1,32 +1,19 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/colors";
-import { Responsive, rVerticalScale } from "../../utils/responsive";
+import { Fonts } from "../../constants/fonts";
+import { Responsive } from "../../utils/responsive";
 
 interface Screen4Props {
-  possibleSolution: string;
-  onSolutionChange: (text: string) => void;
+  // No props needed - this is an informational screen
 }
 
-export default function Screen4({
-  possibleSolution,
-  onSolutionChange,
-}: Screen4Props) {
+export default function Screen4({}: Screen4Props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.questionText}>
-        What is one possible way to handle this?
+      <Text style={styles.infoText}>
+        Okay let's actually get after it: We will use the 80/20 rule so you can schedule this one task 5 times over 7 days
       </Text>
-      <Text style={styles.subText}>Just first thoughts. No pressure.</Text>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Type your thoughts here..."
-        placeholderTextColor={Colors.gray}
-        value={possibleSolution}
-        onChangeText={onSolutionChange}
-        multiline
-        autoFocus
-      />
     </View>
   );
 }
@@ -35,30 +22,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
   },
-  questionText: {
-    fontSize: Responsive.f.xxxl,
-    fontWeight: "700",
+  infoText: {
+    fontSize: Responsive.f.xl,
     color: Colors.black,
-    marginBottom: Responsive.v.md,
-    lineHeight: Responsive.f.xxxl * 1.3,
-  },
-  subText: {
-    fontSize: Responsive.f.md,
-    color: Colors.textSecondary,
-    marginBottom: Responsive.v.lg,
-    fontStyle: "italic",
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: Colors.lightGray,
-    borderRadius: Responsive.r.md,
-    padding: Responsive.lg,
-    fontSize: Responsive.f.lg,
-    color: Colors.black,
-    minHeight: rVerticalScale(120),
-    textAlignVertical: "top",
-    marginTop: Responsive.v.lg,
+    textAlign: "center",
+    lineHeight: Responsive.f.xl * 1.5,
+    paddingHorizontal: Responsive.xl,
+    fontFamily: Fonts.avenir.regular,
   },
 });
 

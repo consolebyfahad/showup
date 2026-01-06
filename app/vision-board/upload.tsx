@@ -15,6 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Header } from "../../components/common";
 import { Button } from "../../components/common";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
 import {
   getAllVisionBoards,
@@ -236,6 +237,7 @@ const styles = StyleSheet.create({
     color: Colors.darkGray,
     lineHeight: Responsive.f.md * 1.5,
     marginBottom: Responsive.v.xl,
+    fontFamily: Fonts.slackside,
   },
   uploadButton: {
     height: rVerticalScale(300),
@@ -257,10 +259,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.primary,
     marginBottom: Responsive.v.xs,
+    fontFamily: Fonts.avenir.heavy,
   },
   uploadHint: {
     fontSize: Responsive.f.sm,
     color: Colors.textSecondary,
+    fontFamily: Fonts.slackside,
   },
   imagePreviewContainer: {
     marginBottom: Responsive.v.xl,
@@ -281,6 +285,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "600",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.regular,
   },
   infoBox: {
     backgroundColor: Colors.cardBeige,
@@ -293,12 +298,14 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.primary,
     marginBottom: Responsive.v.md,
+    fontFamily: Fonts.avenir.heavy,
   },
   infoText: {
     fontSize: Responsive.f.md,
     color: Colors.darkGray,
     marginBottom: Responsive.v.sm,
     lineHeight: Responsive.f.md * 1.5,
+    fontFamily: Fonts.slackside,
   },
   buttonContainer: {
     padding: Responsive.xl,

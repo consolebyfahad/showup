@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "../../components/common";
 import { Header } from "../../components/common";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive } from "../../utils/responsive";
 
 const WEEKLY_QUESTIONNAIRE_KEY = "@yo_twin_weekly_questionnaire";
@@ -140,6 +141,7 @@ const styles = StyleSheet.create({
     color: Colors.darkGray,
     lineHeight: Responsive.f.md * 1.5,
     marginBottom: Responsive.v.xl,
+    fontFamily: Fonts.slackside,
   },
   inputSection: {
     marginBottom: Responsive.v.xl,
@@ -149,6 +151,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.black,
     marginBottom: Responsive.v.sm,
+    fontFamily: Fonts.avenir.regular,
   },
   textInput: {
     backgroundColor: Colors.white,
@@ -159,6 +162,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     color: Colors.black,
     minHeight: Responsive.v.xxl * 2,
+    fontFamily: Fonts.avenir.regular,
   },
   answerInput: {
     minHeight: Responsive.v.xxl * 4,

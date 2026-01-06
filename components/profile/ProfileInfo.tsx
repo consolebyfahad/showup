@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
 
 interface ProfileInfoProps {
@@ -11,7 +12,7 @@ interface ProfileInfoProps {
 }
 
 export default function ProfileInfo({
-  name = "Sarah Chen",
+  name = "Achiever ⭐",
   memberSince = "2023",
   profileImage,
   onImagePress,
@@ -70,15 +71,18 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xxxl,
     fontWeight: "700",
     color: Colors.primary,
+    fontFamily: Fonts.avenir.heavy,
   },
   name: {
     fontSize: Responsive.f.xxl,
     fontWeight: "700",
     color: Colors.black,
     marginBottom: Responsive.v.xs,
+    fontFamily: Fonts.avenir.heavy,
   },
   memberSince: {
     fontSize: Responsive.f.md,
     color: Colors.textSecondary,
+    fontFamily: Fonts.slackside,
   },
 });

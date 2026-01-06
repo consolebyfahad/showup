@@ -2,17 +2,16 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "../../constants/colors";
 import { Fonts } from "../../constants/fonts";
-import { Responsive, rScale } from "../../utils/responsive";
+import { Responsive } from "../../utils/responsive";
 
-interface Screen5Props {
-  selectedDays: { day: string; selected: boolean }[];
-  onDayToggle: (day: string) => void;
+interface Screen7Props {
+  selectedDays: { day: string; selected: boolean; time?: { hour: number; minute: number; period: "AM" | "PM" } }[];
   weekStartDate: Date;
 }
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-export default function Screen5({ selectedDays, onDayToggle, weekStartDate }: Screen5Props) {
+export default function Screen7({ selectedDays, weekStartDate }: Screen7Props) {
   const formatWeekDate = (date: Date) => {
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const day = date.getDate().toString().padStart(2, "0");
@@ -20,13 +19,26 @@ export default function Screen5({ selectedDays, onDayToggle, weekStartDate }: Sc
     return `${month}/${day}/${year}`;
   };
 
-  const getDayColor = (index: number) => {
-    // Alternating colors: light blue for even, light yellow for odd
+  const getDayColor = (index: number, isSelected: boolean) => {
+    if (!isSelected) {
+      return Colors.lightGray; // Gray for unselected
+    }
+    // Alternating colors for selected days
     return index % 2 === 0 ? Colors.backgroundAccent : Colors.cream;
   };
 
-  const getDayTextColor = (index: number) => {
+  const getDayTextColor = (index: number, isSelected: boolean) => {
+    if (!isSelected) {
+      return Colors.gray;
+    }
     return index % 2 === 0 ? Colors.primary : Colors.secondary;
+  };
+
+  const formatTime = (time?: { hour: number; minute: number; period: "AM" | "PM" }) => {
+    if (!time) return "";
+    const hour = time.hour.toString().padStart(2, "0");
+    const minute = time.minute.toString().padStart(2, "0");
+    return `${hour}:${minute} ${time.period}`;
   };
 
   return (
@@ -45,26 +57,29 @@ export default function Screen5({ selectedDays, onDayToggle, weekStartDate }: Sc
         {DAYS.map((day, index) => {
           const dayData = selectedDays.find((d) => d.day === day);
           const isSelected = dayData?.selected || false;
+          const time = dayData?.time;
           
           return (
-            <TouchableOpacity
-              key={day}
-              style={[
-                styles.dayButton,
-                { backgroundColor: getDayColor(index) },
-                isSelected && styles.dayButtonSelected,
-              ]}
-              onPress={() => onDayToggle(day)}
-            >
-              <Text
+            <View key={day} style={styles.dayRow}>
+              <View
                 style={[
-                  styles.dayText,
-                  { color: getDayTextColor(index) },
+                  styles.dayButton,
+                  { backgroundColor: getDayColor(index, isSelected) },
                 ]}
               >
-                {day}
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.dayText,
+                    { color: getDayTextColor(index, isSelected) },
+                  ]}
+                >
+                  {day}
+                </Text>
+              </View>
+              {isSelected && time && (
+                <Text style={styles.timeText}>{formatTime(time)}</Text>
+              )}
+            </View>
           );
         })}
       </View>
@@ -110,19 +125,27 @@ const styles = StyleSheet.create({
     gap: Responsive.v.md,
     marginTop: Responsive.v.lg,
   },
+  dayRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   dayButton: {
     paddingVertical: Responsive.v.lg,
     paddingHorizontal: Responsive.xl,
     borderRadius: Responsive.r.md,
-    width: "100%",
+    flex: 1,
     alignItems: "center",
-  },
-  dayButtonSelected: {
-    borderWidth: 2,
-    borderColor: Colors.primary,
   },
   dayText: {
     fontSize: Responsive.f.lg,
     fontFamily: Fonts.slackside,
   },
+  timeText: {
+    fontSize: Responsive.f.md,
+    color: Colors.darkGray,
+    marginLeft: Responsive.md,
+    fontFamily: Fonts.slackside,
+  },
 });
+

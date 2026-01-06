@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../../constants/colors";
+import { Fonts } from "../../constants/fonts";
 import { Responsive, rVerticalScale } from "../../utils/responsive";
 
 interface Screen3Props {
@@ -12,12 +13,11 @@ export default function Screen3({ question, onQuestionChange }: Screen3Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.questionText}>
-        You don't need to solve anything now. Just write one question you have
-        about this.
+        What is the <Text style={styles.emphasis}>SMALLEST</Text> step you can take to handle this?
       </Text>
       <TextInput
         style={styles.textInput}
-        placeholder="Type your question here..."
+        placeholder="Type your answer here..."
         placeholderTextColor={Colors.gray}
         value={question}
         onChangeText={onQuestionChange}
@@ -39,6 +39,11 @@ const styles = StyleSheet.create({
     color: Colors.black,
     marginBottom: Responsive.v.xxl,
     lineHeight: Responsive.f.xxxl * 1.3,
+    fontFamily: Fonts.avenir.heavy,
+    textAlign: "center",
+  },
+  emphasis: {
+    textTransform: "uppercase",
   },
   textInput: {
     borderWidth: 1,
@@ -50,6 +55,8 @@ const styles = StyleSheet.create({
     minHeight: rVerticalScale(120),
     textAlignVertical: "top",
     marginTop: Responsive.v.lg,
+    backgroundColor: Colors.white,
+    fontFamily: Fonts.slackside,
   },
 });
 
