@@ -19,7 +19,6 @@ export default function Index() {
       const value = await AsyncStorage.getItem(ONBOARDING_KEY);
       setHasCompletedOnboarding(value === "true");
     } catch (error) {
-      console.error("Error checking onboarding status:", error);
       setHasCompletedOnboarding(false);
     } finally {
       setIsLoading(false);
@@ -34,9 +33,9 @@ export default function Index() {
     );
   }
 
-  // if (hasCompletedOnboarding) {
-  //   return <Redirect href="/(tabs)" />;
-  // }
+  if (hasCompletedOnboarding) {
+    return <Redirect href="/(tabs)" />;
+  }
 
   return <Redirect href="/auth/onboarding" />;
 }

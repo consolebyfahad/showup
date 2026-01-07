@@ -150,7 +150,7 @@ export default function HelpFeedback() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.backgroundAccent,
   },
   scrollView: {
     flex: 1,
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.black,
     marginBottom: Responsive.v.md,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   sectionDescription: {
     fontSize: Responsive.f.md,
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
     marginTop: Responsive.v.md,
     marginBottom: Responsive.v.xs,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   successSubtext: {
     fontSize: Responsive.f.md,

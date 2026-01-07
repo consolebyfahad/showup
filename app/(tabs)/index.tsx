@@ -18,6 +18,11 @@ import {
 import { Colors } from "../../constants/colors";
 import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale } from "../../utils/responsive";
+import {
+  getStreakData,
+  getLifetimeCount,
+  checkAndResetWeek,
+} from "../../utils/streak";
 
 const PROFILE_STORAGE_KEY = "@yo_twin_user_profile";
 
@@ -29,12 +34,24 @@ interface UserProfile {
 
 export default function Home() {
   const router = useRouter();
-  const [weeklyStreak] = useState(5); // Example: 5 out of 7 days
-  const [lifetimeCount] = useState(142); // Example count
+  const [weeklyStreak, setWeeklyStreak] = useState(0);
+  const [lifetimeCount, setLifetimeCount] = useState(0);
   const [profileData, setProfileData] = useState<UserProfile | null>(null);
 
-  const loadProfileData = useCallback(async () => {
+  const loadData = useCallback(async () => {
     try {
+      // Check and reset week if needed
+      await checkAndResetWeek();
+
+      // Load streak data
+      const streak = await getStreakData();
+      setWeeklyStreak(streak.currentStreak);
+
+      // Load lifetime count
+      const lifetime = await getLifetimeCount();
+      setLifetimeCount(lifetime);
+
+      // Load profile data
       const profileJson = await AsyncStorage.getItem(PROFILE_STORAGE_KEY);
       if (profileJson) {
         const profile: UserProfile = JSON.parse(profileJson);
@@ -47,7 +64,6 @@ export default function Home() {
         });
       }
     } catch (error) {
-      console.error("Error loading profile data:", error);
       setProfileData({
         name: "Achiever ⭐",
         birthday: null,
@@ -58,8 +74,8 @@ export default function Home() {
 
   useFocusEffect(
     useCallback(() => {
-      loadProfileData();
-    }, [loadProfileData])
+      loadData();
+    }, [loadData])
   );
 
   const getInitials = (name: string) => {
@@ -136,7 +152,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xl,
     fontWeight: "700",
     color: Colors.primary,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   profileImageContainer: {
     marginLeft: Responsive.md,
@@ -161,7 +177,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "700",
     color: Colors.primary,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   scrollView: {
     flex: 1,

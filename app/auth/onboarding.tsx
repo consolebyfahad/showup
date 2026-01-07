@@ -109,6 +109,12 @@ export default function Onboarding() {
     } else {
       // Onboarding complete - save all data to local storage
       try {
+        // Clear previous streak and vision board data for fresh start
+        const { resetStreak } = await import("../../utils/streak");
+        const { setCurrentVisionBoard } = await import("../../utils/visionBoard");
+        await resetStreak();
+        await setCurrentVisionBoard(null);
+        
         // Save onboarding completion status
         await AsyncStorage.setItem("@yo_twin_onboarding_complete", "true");
 
@@ -159,20 +165,10 @@ export default function Onboarding() {
           // Find the date for this day of the week
           const dayIndex = DAYS.indexOf(daySchedule.day);
           if (dayIndex === -1) {
-            console.error(`Invalid day: ${daySchedule.day}`);
             continue;
           }
           const sessionDate = new Date(weekStartDate);
           sessionDate.setDate(weekStartDate.getDate() + dayIndex);
-
-          // Debug: Verify the date is correct
-          console.log(
-            `Creating session for ${
-              daySchedule.day
-            } (index ${dayIndex}): date=${formatDate(
-              sessionDate
-            )}, day of week=${sessionDate.getDay()}`
-          );
 
           const session: Session = {
             id: `session-${Date.now()}-${daySchedule.day}`,
@@ -187,15 +183,14 @@ export default function Onboarding() {
 
           try {
             await saveSession(session);
-            console.log("Session created:", session);
           } catch (error) {
-            console.error("Error creating session:", error);
+            // Error creating session
           }
         }
 
         router.replace("/(tabs)");
       } catch (error) {
-        console.error("Error saving onboarding status:", error);
+        // Error saving onboarding status
         router.replace("/(tabs)");
       }
     }

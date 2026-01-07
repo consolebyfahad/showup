@@ -54,7 +54,7 @@ export default function ProfileEdit() {
         }
       }
     } catch (error) {
-      console.error("Error loading profile data:", error);
+      // Error loading profile data
     }
   };
 
@@ -99,7 +99,7 @@ export default function ProfileEdit() {
         { text: "OK", onPress: () => router.back() },
       ]);
     } catch (error) {
-      console.error("Error saving profile:", error);
+      // Error saving profile
       Alert.alert("Error", "Failed to save profile. Please try again.");
     }
   };
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xxxl,
     fontWeight: "700",
     color: Colors.primary,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   editIconContainer: {
     position: "absolute",
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.lg,
     fontWeight: "600",
     color: Colors.black,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   doneButton: {
     paddingVertical: Responsive.v.sm,

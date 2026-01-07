@@ -50,7 +50,6 @@ export async function requestNotificationPermissions(): Promise<boolean> {
   }
 
   if (finalStatus !== "granted") {
-    console.warn("Failed to get push token for push notification!");
     return false;
   }
 
@@ -130,12 +129,8 @@ export async function scheduleWeeklyNotification(
       },
     });
 
-    const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    console.log(`✅ Weekly notification scheduled for ${dayNames[dayOfWeek]} at ${hour24}:${minute.toString().padStart(2, '0')} (ID: ${notificationId})`);
-    console.log(`   Target date: ${targetDate.toLocaleString()}`);
     return notificationId;
   } catch (error) {
-    console.error("Error scheduling weekly notification:", error);
     // Fallback: try with date-based trigger
     try {
       const hour24 = convertTo24Hour(time.hour, time.period);
@@ -177,7 +172,6 @@ export async function scheduleWeeklyNotification(
         },
       });
     } catch (fallbackError) {
-      console.error("Fallback scheduling also failed:", fallbackError);
       return null;
     }
   }
@@ -214,10 +208,8 @@ export async function scheduleDailyNotification(
       },
     });
 
-    console.log("Daily notification scheduled:", notificationId);
     return notificationId;
   } catch (error) {
-    console.error("Error scheduling notification:", error);
     return null;
   }
 }
@@ -252,7 +244,6 @@ export async function rescheduleWeeklyNotification(
   dayOfWeek: number,
   time: NotificationTime
 ): Promise<string | null> {
-  console.log(`🔄 Rescheduling weekly notification for day ${dayOfWeek}`);
   return scheduleWeeklyNotification(dayOfWeek, time);
 }
 
@@ -266,7 +257,6 @@ export async function rescheduleAllWeeklyNotifications(): Promise<void> {
     const onboardingDataStr = await AsyncStorage.getItem("@yo_twin_onboarding_data");
     
     if (!onboardingDataStr) {
-      console.log("ℹ️ No onboarding data found, skipping notification rescheduling");
       return;
     }
 
@@ -276,17 +266,11 @@ export async function rescheduleAllWeeklyNotifications(): Promise<void> {
     // Check permissions first
     const hasPermission = await requestNotificationPermissions();
     if (!hasPermission) {
-      console.warn("⚠️ Notification permissions not granted, cannot reschedule");
       return;
     }
 
-    // Get existing scheduled notifications for debugging
-    const existingNotifications = await getScheduledNotifications();
-    console.log(`📋 Found ${existingNotifications.length} existing scheduled notification(s)`);
-
     // Cancel all existing notifications
     await cancelAllNotifications();
-    console.log("🗑️ Cancelled all existing notifications");
 
     // Reschedule all selected days
     const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -299,26 +283,13 @@ export async function rescheduleAllWeeklyNotifications(): Promise<void> {
           const notificationId = await scheduleWeeklyNotification(dayIndex, daySchedule.time);
           if (notificationId) {
             scheduledCount++;
-          } else {
-            console.warn(`⚠️ Failed to schedule notification for ${daySchedule.day}`);
           }
         }
       }
     }
 
-    // Verify scheduled notifications
-    const newNotifications = await getScheduledNotifications();
-    console.log(`✅ Rescheduled ${scheduledCount} weekly notification(s)`);
-    console.log(`📋 Total scheduled notifications: ${newNotifications.length}`);
-    
-    // Log all scheduled notifications for debugging
-    newNotifications.forEach((notif, index) => {
-      const trigger = notif.trigger as any;
-      const date = trigger?.date ? new Date(trigger.date) : null;
-      console.log(`   ${index + 1}. ${date ? date.toLocaleString() : 'Unknown date'}`);
-    });
   } catch (error) {
-    console.error("❌ Error rescheduling weekly notifications:", error);
+    // Error rescheduling weekly notifications
   }
 }
 

@@ -21,7 +21,8 @@ export default function Screen2({
   return (
     <View style={styles.container}>
       <Text style={styles.questionText}>
-        I feel you - but{'\n'}let's just pick one{'\n'}that we can help{'\n'}you with
+        I feel you - but{"\n"}let's just pick one{"\n"}that we can help{"\n"}you
+        with
       </Text>
       <View style={styles.optionsContainer}>
         {validHabits.map((habit, index) => {
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
     marginBottom: Responsive.v.xxl,
     lineHeight: Responsive.f.xxxl * 1.3,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
     textAlign: "center",
   },
   optionsContainer: {
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
   },
   optionButtonSelected: {
     borderColor: Colors.primary,
-    borderWidth: 2,
+    borderWidth: 1,
   },
   optionText: {
     color: Colors.black,
@@ -82,4 +83,3 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.slackside,
   },
 });
-

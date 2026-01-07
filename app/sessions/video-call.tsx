@@ -124,15 +124,11 @@ export default function VideoCall() {
           sessionStartTimeRef.current = state.sessionStartTime;
           lastPauseTimeRef.current = null; // Clear pause time since we're active now
           setIsSessionActive(true);
-          console.log(
-            `🔄 Resumed session: ${calculatedTimeRemaining}s remaining (was paused for ${pausedTime}s)`
-          );
         } else {
           // Session expired while in background
           clearSessionState();
           setTimeRemaining(0);
           setIsSessionActive(false);
-          console.log("⏰ Session expired while app was in background");
           // Navigate to completion screen
           setTimeout(() => {
             router.replace("/sessions/complete");
@@ -140,7 +136,7 @@ export default function VideoCall() {
         }
       }
     } catch (error) {
-      console.error("Error loading session state:", error);
+      // Error loading session state
     }
   };
 
@@ -153,9 +149,8 @@ export default function VideoCall() {
         totalPausedTime: totalPausedTimeRef.current,
       };
       await AsyncStorage.setItem(SESSION_STATE_KEY, JSON.stringify(state));
-      console.log(`💾 Session state saved: ${state.timeRemaining}s remaining`);
     } catch (error) {
-      console.error("Error saving session state:", error);
+      // Error saving session state
     }
   };
 
@@ -166,7 +161,7 @@ export default function VideoCall() {
       lastPauseTimeRef.current = null;
       totalPausedTimeRef.current = 0;
     } catch (error) {
-      console.error("Error clearing session state:", error);
+      // Error clearing session state
     }
   };
 
@@ -176,7 +171,6 @@ export default function VideoCall() {
       nextAppState === "active"
     ) {
       // App came to foreground
-      console.log("📱 App came to foreground");
       setIsAppActive(true);
       if (isSessionActive && sessionStartTimeRef.current) {
         // Reload state to recalculate time remaining
@@ -190,7 +184,6 @@ export default function VideoCall() {
       nextAppState.match(/inactive|background/)
     ) {
       // App went to background - pause timer
-      console.log("📱 App went to background - pausing timer");
       setIsAppActive(false);
       if (isSessionActive) {
         lastPauseTimeRef.current = Date.now();
@@ -214,9 +207,9 @@ export default function VideoCall() {
       sessionStartTime: now,
       totalPausedTime: 0,
     };
-    AsyncStorage.setItem(SESSION_STATE_KEY, JSON.stringify(state)).catch(
-      (error) => console.error("Error saving initial session state:", error)
-    );
+    AsyncStorage.setItem(SESSION_STATE_KEY, JSON.stringify(state)).catch(() => {
+      // Error saving initial session state
+    });
   };
 
   const formatTime = (seconds: number) => {
@@ -319,13 +312,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: Responsive.xl,
     paddingVertical: Responsive.v.md,
     borderRadius: Responsive.r.lg,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   permissionText: {
     fontSize: Responsive.f.lg,
     color: Colors.white,
     textAlign: "center",
     padding: Responsive.xl,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
 });

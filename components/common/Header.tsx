@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xl,
     fontWeight: "700",
     color: Colors.black,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   rightButton: {
     padding: Responsive.sm,

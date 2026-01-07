@@ -124,7 +124,7 @@ export default function AboutYoTwin() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.backgroundAccent,
   },
   scrollView: {
     flex: 1,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xxxl + Responsive.f.lg,
     fontWeight: "700",
     marginBottom: Responsive.v.sm,
-    fontFamily: Fonts.avenir.black,
+    fontFamily: Fonts.avenir.bold,
   },
   logoShow: {
     color: Colors.black,
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.black,
     marginBottom: Responsive.v.md,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   sectionText: {
     fontSize: Responsive.f.md,

@@ -19,10 +19,12 @@ export default function Screen8({}: Screen8Props) {
         style={styles.handshakeIcon}
       />
       <Text style={styles.confirmationText}>
-        Bet! Ever wondered what it's{'\n'}
-        like having a twin? <Text style={styles.boldText}>Guess what?</Text>{'\n'}
-        Your <Text style={styles.boldText}>better half</Text> will be calling.{'\n'}
-        So when it's time, "Yooo twin{'\n'}
+        Bet! Ever wondered what it's{"\n"}
+        like having a twin? <Text style={styles.boldText}>Guess what?</Text>
+        {"\n"}
+        Your <Text style={styles.boldText}>better half</Text> will be calling.
+        {"\n"}
+        So when it's time, "Yooo twin{"\n"}
         (YOT), Pick up!"
       </Text>
     </View>
@@ -50,7 +52,6 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: "700",
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
 });
-

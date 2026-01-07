@@ -11,10 +11,7 @@ export default function ProfileHeader() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => router.back()}
-        style={styles.backButton}
-      >
+      <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
         <Ionicons name="arrow-back" size={rScale(24)} color={Colors.black} />
       </TouchableOpacity>
       <View style={styles.titleContainer}>
@@ -47,7 +44,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: Responsive.f.xl,
     fontWeight: "700",
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   titleShow: {
     color: Colors.black,
@@ -59,4 +56,3 @@ const styles = StyleSheet.create({
     width: rScale(40),
   },
 });
-

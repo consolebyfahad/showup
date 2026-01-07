@@ -61,7 +61,7 @@ export default function WeeklyQuestionnaire() {
         { text: "OK", onPress: () => router.back() },
       ]);
     } catch (error) {
-      console.error("Error saving questionnaire:", error);
+      // Error saving questionnaire
       Alert.alert("Error", "Failed to save questionnaire. Please try again.");
     }
   };

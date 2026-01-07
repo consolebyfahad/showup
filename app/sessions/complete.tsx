@@ -13,6 +13,7 @@ import { Colors } from "../../constants/colors";
 import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale } from "../../utils/responsive";
 import { incrementVisionBoardProgress } from "../../utils/visionBoard";
+import { markDayCompleted } from "../../utils/streak";
 
 const EMOJI_OPTIONS = [
   { emoji: "😊", label: "Great" },
@@ -28,13 +29,15 @@ export default function Complete() {
 
   const handleFinish = async () => {
     try {
+      // Mark today as completed in streak
+      await markDayCompleted();
+
       // Increment vision board progress
       await incrementVisionBoardProgress();
-      
+
       // Navigate back to home
       router.replace("/(tabs)");
     } catch (error) {
-      console.error("Error completing session:", error);
       router.replace("/(tabs)");
     }
   };
@@ -53,12 +56,8 @@ export default function Complete() {
           </View>
 
           {/* Encouragement Message */}
-          <Text style={styles.title}>
-            You just showed up for yourself!
-          </Text>
-          <Text style={styles.subtitle}>
-            How do you feel?
-          </Text>
+          <Text style={styles.title}>You just showed up for yourself!</Text>
+          <Text style={styles.subtitle}>How do you feel?</Text>
 
           {/* Emoji Survey */}
           <View style={styles.emojiContainer}>
@@ -87,7 +86,8 @@ export default function Complete() {
           {/* Motivational Message */}
           <View style={styles.messageContainer}>
             <Text style={styles.messageText}>
-              Every session counts. You're building consistency, one step at a time.
+              Every session counts. You're building consistency, one step at a
+              time.
             </Text>
           </View>
         </View>
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     textAlign: "center",
     marginBottom: Responsive.v.sm,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   subtitle: {
     fontSize: Responsive.f.xl,

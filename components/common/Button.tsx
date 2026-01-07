@@ -154,6 +154,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: "600",
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
 });

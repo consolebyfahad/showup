@@ -43,8 +43,8 @@ export default function Screen1({ habits, onHabitsChange }: Screen1Props) {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 50 : undefined}
     >
       <ScrollView
         ref={scrollViewRef}
@@ -58,7 +58,7 @@ export default function Screen1({ habits, onHabitsChange }: Screen1Props) {
         </Text>
         <View style={styles.inputsContainer}>
           {[0, 1, 2].map((index) => (
-            <View key={index} style={styles.inputWrapper}>
+            <View key={index}>
               <TextInput
                 ref={(ref) => {
                   inputRefs.current[index] = ref;
@@ -107,14 +107,11 @@ const styles = StyleSheet.create({
     color: Colors.black,
     marginBottom: Responsive.v.xxl,
     lineHeight: Responsive.f.xxxl * 1.3,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   inputsContainer: {
     gap: Responsive.v.lg,
     marginTop: Responsive.v.xl,
-  },
-  inputWrapper: {
-    marginBottom: Responsive.v.md,
   },
   textInput: {
     borderWidth: 1,

@@ -45,6 +45,6 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: Responsive.f.xl,
     fontWeight: "600",
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
 });

@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     marginBottom: Responsive.v.md,
     textAlign: "center",
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   progressContainer: {
     flexDirection: "row",

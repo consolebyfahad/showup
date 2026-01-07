@@ -1,13 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Colors } from "../../constants/colors";
@@ -38,7 +32,7 @@ export default function IncomingCall() {
         setProfileData(profile);
       }
     } catch (error) {
-      console.error("Error loading profile data:", error);
+      // Error loading profile data
     }
   };
 
@@ -147,14 +141,14 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xxxl * 1.5,
     fontWeight: "700",
     color: Colors.primary,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   callerName: {
     fontSize: Responsive.f.xxxl * 1.5,
     fontWeight: "700",
     color: Colors.white,
     marginBottom: Responsive.v.sm,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   callSubtext: {
     fontSize: Responsive.f.lg,
@@ -203,6 +197,6 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xl,
     fontWeight: "700",
     color: Colors.white,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
 });

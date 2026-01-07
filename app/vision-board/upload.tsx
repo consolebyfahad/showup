@@ -79,8 +79,7 @@ export default function VisionBoardUpload() {
         const boardWeekStart = new Date(board.weekStartDate);
         boardWeekStart.setHours(0, 0, 0, 0);
         return (
-          boardWeekStart.getTime() === weekStart.getTime() &&
-          !board.isCompleted
+          boardWeekStart.getTime() === weekStart.getTime() && !board.isCompleted
         );
       });
 
@@ -113,7 +112,7 @@ export default function VisionBoardUpload() {
         { text: "OK", onPress: () => router.back() },
       ]);
     } catch (error) {
-      console.error("Error saving vision board:", error);
+      // Error saving vision board
       Alert.alert("Error", "Failed to save vision board. Please try again.");
     } finally {
       setIsLoading(false);
@@ -144,9 +143,9 @@ export default function VisionBoardUpload() {
       >
         <View style={styles.content}>
           <Text style={styles.description}>
-            Upload an image that represents your goals or who you want to become.
-            As you complete sessions, your vision board will gradually come to
-            life with color.
+            Upload an image that represents your goals or who you want to
+            become. As you complete sessions, your vision board will gradually
+            come to life with color.
           </Text>
 
           {selectedImage ? (
@@ -259,7 +258,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.primary,
     marginBottom: Responsive.v.xs,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   uploadHint: {
     fontSize: Responsive.f.sm,
@@ -298,7 +297,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.primary,
     marginBottom: Responsive.v.md,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   infoText: {
     fontSize: Responsive.f.md,
@@ -318,4 +317,3 @@ const styles = StyleSheet.create({
     marginTop: Responsive.v.xs,
   },
 });
-

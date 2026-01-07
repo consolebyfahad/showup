@@ -78,7 +78,9 @@ export default function Subscription() {
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   style={styles.upgradeButton}
-                  onPress={() => console.log("Upgrade pressed")}
+                  onPress={() => {
+                    // Upgrade pressed
+                  }}
                   activeOpacity={0.8}
                 >
                   <Text style={styles.upgradeButtonText}>
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xl,
     fontWeight: "700",
     color: Colors.black,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   badge: {
     backgroundColor: Colors.backgroundAccent,
@@ -233,7 +235,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.white,
     marginBottom: Responsive.v.sm,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   priceContainer: {
     flexDirection: "row",
@@ -243,7 +245,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xxxl + Responsive.f.lg,
     fontWeight: "700",
     color: Colors.white,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   pricePeriod: {
     fontSize: Responsive.f.md,
@@ -286,7 +288,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.lg,
     fontWeight: "700",
     color: Colors.primary,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   section: {
     paddingHorizontal: Responsive.xl,
@@ -297,7 +299,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.black,
     marginBottom: Responsive.v.lg,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   benefitItem: {
     flexDirection: "row",

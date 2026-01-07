@@ -42,7 +42,7 @@ export default function QuoteOfWeek({
         setIsEditing(!initialQuote);
       }
     } catch (error) {
-      console.error("Error loading quote:", error);
+      // Error loading quote
       setQuote(initialQuote || "");
       setIsEditing(!initialQuote);
     } finally {
@@ -63,7 +63,7 @@ export default function QuoteOfWeek({
         setIsEditing(false);
         onQuoteChange?.(quote.trim());
       } catch (error) {
-        console.error("Error saving quote:", error);
+        // Error saving quote
       }
     }
   };
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     marginTop: Responsive.v.lg,
     marginBottom: Responsive.v.md,
     textAlign: "center",
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   inputContainer: {
     flexDirection: "row",

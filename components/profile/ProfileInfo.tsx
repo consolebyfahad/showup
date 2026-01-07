@@ -71,14 +71,14 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xxxl,
     fontWeight: "700",
     color: Colors.primary,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   name: {
     fontSize: Responsive.f.xxl,
     fontWeight: "700",
     color: Colors.black,
     marginBottom: Responsive.v.xs,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   memberSince: {
     fontSize: Responsive.f.md,

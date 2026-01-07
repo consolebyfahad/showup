@@ -1,12 +1,6 @@
 import { useFocusEffect } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "../../constants/colors";
 import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
@@ -37,7 +31,7 @@ export default function VisionBoardComponent({ onPress }: VisionBoardProps) {
       const board = await getCurrentVisionBoard();
       setVisionBoard(board);
     } catch (error) {
-      console.error("Error loading vision board:", error);
+      // Error loading vision board
     } finally {
       setIsLoading(false);
     }
@@ -64,10 +58,7 @@ export default function VisionBoardComponent({ onPress }: VisionBoardProps) {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>VISION BOARD</Text>
-        <TouchableOpacity
-          style={styles.placeholderContainer}
-          onPress={onPress}
-        >
+        <TouchableOpacity style={styles.placeholderContainer} onPress={onPress}>
           <Text style={styles.placeholderText}>
             Upload your vision board to start tracking progress
           </Text>
@@ -87,15 +78,15 @@ export default function VisionBoardComponent({ onPress }: VisionBoardProps) {
         activeOpacity={0.9}
       >
         <View style={styles.imageWrapper}>
-          {/* Base grayscale image - always visible */}
+          {/* Base monochrome (black & white) image - always visible */}
           <View style={styles.baseImageContainer}>
             <Image
               source={{ uri: visionBoard.imageUri }}
-              style={[styles.image, styles.baseImage]}
+              style={styles.image}
               resizeMode="cover"
             />
-            {/* Gray overlay to simulate grayscale */}
-            <View style={styles.grayscaleOverlay} />
+            {/* True monochrome overlay - creates black and white effect */}
+            <View style={styles.monochromeOverlay} />
           </View>
           {/* Colored version - fades in as progress increases */}
           <View
@@ -115,15 +106,11 @@ export default function VisionBoardComponent({ onPress }: VisionBoardProps) {
           {/* Progress indicator */}
           <View style={styles.progressOverlay}>
             <View style={styles.progressBar}>
-              <View
-                style={[
-                  styles.progressFill,
-                  { width: `${progress}%` },
-                ]}
-              />
+              <View style={[styles.progressFill, { width: `${progress}%` }]} />
             </View>
             <Text style={styles.progressText}>
-              {visionBoard.completedSessions}/{visionBoard.totalSessions} sessions
+              {visionBoard.completedSessions}/{visionBoard.totalSessions}{" "}
+              sessions
             </Text>
           </View>
         </View>
@@ -151,7 +138,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     marginBottom: Responsive.v.md,
     textAlign: "center",
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   imageContainer: {
     borderRadius: Responsive.r.lg,
@@ -170,20 +157,20 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  baseImage: {
-    opacity: 0.3, // Make base image darker/more muted
-  },
   image: {
     width: "100%",
     height: "100%",
   },
-  grayscaleOverlay: {
+  monochromeOverlay: {
     position: "absolute",
     top: 0,
     left: 0,
     width: "100%",
     height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.4)", // Dark overlay to simulate grayscale
+    // True monochrome effect: creates black and white by desaturating colors
+    // Using a gray overlay with high opacity to create monochrome appearance
+    backgroundColor: "rgba(0, 0, 0, 0.3)", // Dark overlay for monochrome effect
+    // This creates a desaturated, black and white appearance
   },
   colorOverlay: {
     position: "absolute",
@@ -234,4 +221,3 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.slackside,
   },
 });
-

@@ -21,9 +21,23 @@ const logAllStorage = async () => {
     const keys = await AsyncStorage.getAllKeys();
     const stores = await AsyncStorage.multiGet(keys);
 
-    console.log("AsyncStorage contents: ", stores);
+    // Parse and format storage contents for better readability
+    const formattedStorage: Record<string, any> = {};
+    stores.forEach(([key, value]) => {
+      try {
+        // Try to parse JSON values
+        formattedStorage[key] = value ? JSON.parse(value) : null;
+      } catch {
+        // If not JSON, keep as string
+        formattedStorage[key] = value;
+      }
+    });
+
+    console.log("=== AsyncStorage Contents ===");
+    console.log(JSON.stringify(formattedStorage, null, 2));
+    console.log("=== End Storage Contents ===");
   } catch (e) {
-    console.error("Error reading AsyncStorage", e);
+    // Silently handle errors
   }
 };
 
@@ -59,7 +73,7 @@ export default function Profile() {
         setMemberSince(new Date().getFullYear().toString());
       }
     } catch (error) {
-      console.error("Error loading profile data:", error);
+      // Error loading profile data
       setProfileData({
         name: "Achiever ⭐",
         birthday: null,
@@ -78,7 +92,6 @@ export default function Profile() {
 
   const handleLogout = () => {
     // Handle logout logic here
-    console.log("Logout pressed");
   };
 
   return (

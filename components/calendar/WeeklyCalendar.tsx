@@ -177,7 +177,6 @@ export default function WeeklyCalendar({
       date.getFullYear() === today.getFullYear()
     );
   };
-  console.log(sessions);
 
   return (
     <View style={styles.container}>
@@ -551,7 +550,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "700",
     color: Colors.primary,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   headerRight: {
     flexDirection: "row",
@@ -664,7 +663,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "700",
     color: Colors.black,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   dayNumberToday: {
     color: Colors.white,
@@ -762,7 +761,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.lg,
     fontWeight: "700",
     color: Colors.primary,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   tooltipCloseButton: {
     width: rScale(32),
@@ -798,7 +797,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "600",
     color: Colors.white,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   tooltipButtonTextSecondary: {
     color: Colors.white,
@@ -835,7 +834,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xl,
     fontWeight: "700",
     color: Colors.primary,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   closeButton: {
     width: rScale(32),
@@ -920,6 +919,6 @@ const styles = StyleSheet.create({
   monthItemTextSelected: {
     color: Colors.primary,
     fontWeight: "700",
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
 });

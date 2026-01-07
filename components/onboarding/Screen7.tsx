@@ -5,11 +5,23 @@ import { Fonts } from "../../constants/fonts";
 import { Responsive } from "../../utils/responsive";
 
 interface Screen7Props {
-  selectedDays: { day: string; selected: boolean; time?: { hour: number; minute: number; period: "AM" | "PM" } }[];
+  selectedDays: {
+    day: string;
+    selected: boolean;
+    time?: { hour: number; minute: number; period: "AM" | "PM" };
+  }[];
   weekStartDate: Date;
 }
 
-const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAYS = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
 
 export default function Screen7({ selectedDays, weekStartDate }: Screen7Props) {
   const formatWeekDate = (date: Date) => {
@@ -34,7 +46,11 @@ export default function Screen7({ selectedDays, weekStartDate }: Screen7Props) {
     return index % 2 === 0 ? Colors.primary : Colors.secondary;
   };
 
-  const formatTime = (time?: { hour: number; minute: number; period: "AM" | "PM" }) => {
+  const formatTime = (time?: {
+    hour: number;
+    minute: number;
+    period: "AM" | "PM";
+  }) => {
     if (!time) return "";
     const hour = time.hour.toString().padStart(2, "0");
     const minute = time.minute.toString().padStart(2, "0");
@@ -44,11 +60,13 @@ export default function Screen7({ selectedDays, weekStartDate }: Screen7Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Your Week Reimagined</Text>
-      
+
       <View style={styles.weekPill}>
-        <Text style={styles.weekText}>Week of {formatWeekDate(weekStartDate)}</Text>
+        <Text style={styles.weekText}>
+          Week of {formatWeekDate(weekStartDate)}
+        </Text>
       </View>
-      
+
       <Text style={styles.recommendation}>
         We recommend 5x a week but you ultimately decide
       </Text>
@@ -58,7 +76,7 @@ export default function Screen7({ selectedDays, weekStartDate }: Screen7Props) {
           const dayData = selectedDays.find((d) => d.day === day);
           const isSelected = dayData?.selected || false;
           const time = dayData?.time;
-          
+
           return (
             <View key={day} style={styles.dayRow}>
               <View
@@ -98,7 +116,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
     marginBottom: Responsive.v.lg,
     textAlign: "center",
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   weekPill: {
     backgroundColor: Colors.backgroundAccent,
@@ -148,4 +166,3 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.slackside,
   },
 });
-

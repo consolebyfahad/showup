@@ -25,7 +25,6 @@ export async function getAllSessions(): Promise<Session[]> {
     }
     return JSON.parse(sessionsJson);
   } catch (error) {
-    console.error("Error getting sessions:", error);
     return [];
   }
 }
@@ -46,7 +45,6 @@ export async function saveSession(session: Session): Promise<void> {
 
     await AsyncStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
   } catch (error) {
-    console.error("Error saving session:", error);
     throw error;
   }
 }
@@ -60,7 +58,6 @@ export async function deleteSession(sessionId: string): Promise<void> {
     const filtered = sessions.filter((s) => s.id !== sessionId);
     await AsyncStorage.setItem(SESSIONS_KEY, JSON.stringify(filtered));
   } catch (error) {
-    console.error("Error deleting session:", error);
     throw error;
   }
 }
@@ -90,7 +87,6 @@ export async function checkSessionOverlap(
     });
     return !!overlapping;
   } catch (error) {
-    console.error("Error checking session overlap:", error);
     return false;
   }
 }
@@ -112,7 +108,6 @@ export async function getSessionsForDateRange(
       return sessionDate >= start && sessionDate <= end;
     });
   } catch (error) {
-    console.error("Error getting sessions for date range:", error);
     return [];
   }
 }
@@ -130,7 +125,6 @@ export async function completeSession(sessionId: string): Promise<void> {
       await saveSession(session);
     }
   } catch (error) {
-    console.error("Error completing session:", error);
     throw error;
   }
 }

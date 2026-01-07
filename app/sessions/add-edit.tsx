@@ -65,14 +65,16 @@ export default function AddEditSession() {
         if (session) {
           setIsEditMode(true);
           setTitle(session.title || "");
-          setHour(session.hour >= 12 ? session.hour - 12 || 12 : session.hour || 12);
+          setHour(
+            session.hour >= 12 ? session.hour - 12 || 12 : session.hour || 12
+          );
           setMinute(session.minute);
           setPeriod(session.hour >= 12 ? "PM" : "AM");
           setSelectedDate(new Date(session.date));
         }
       }
     } catch (error) {
-      console.error("Error loading session:", error);
+      // Error loading session
     }
   };
 
@@ -81,7 +83,12 @@ export default function AddEditSession() {
       setIsLoading(true);
 
       // Convert to 24-hour format
-      const hour24 = period === "PM" && hour !== 12 ? hour + 12 : period === "AM" && hour === 12 ? 0 : hour;
+      const hour24 =
+        period === "PM" && hour !== 12
+          ? hour + 12
+          : period === "AM" && hour === 12
+          ? 0
+          : hour;
 
       // Check for overlapping sessions (only if not editing the same session)
       const dateStr = formatDate(selectedDate);
@@ -109,7 +116,8 @@ export default function AddEditSession() {
         title: title.trim() || undefined,
         color: Colors.tagBlue, // Default color
         createdAt: params.sessionId
-          ? (await loadSessionCreatedAt(params.sessionId)) || new Date().toISOString()
+          ? (await loadSessionCreatedAt(params.sessionId)) ||
+            new Date().toISOString()
           : new Date().toISOString(),
         isCompleted: false,
       };
@@ -118,18 +126,22 @@ export default function AddEditSession() {
 
       Alert.alert(
         "Success",
-        isEditMode ? "Session updated successfully!" : "Session created successfully!",
+        isEditMode
+          ? "Session updated successfully!"
+          : "Session created successfully!",
         [{ text: "OK", onPress: () => router.back() }]
       );
     } catch (error) {
-      console.error("Error saving session:", error);
+      // Error saving session
       Alert.alert("Error", "Failed to save session. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const loadSessionCreatedAt = async (sessionId: string): Promise<string | null> => {
+  const loadSessionCreatedAt = async (
+    sessionId: string
+  ): Promise<string | null> => {
     try {
       const sessionsJson = await AsyncStorage.getItem("@yo_twin_sessions");
       if (sessionsJson) {
@@ -138,7 +150,7 @@ export default function AddEditSession() {
         return session?.createdAt || null;
       }
     } catch (error) {
-      console.error("Error loading session createdAt:", error);
+      // Error loading session createdAt
     }
     return null;
   };
@@ -159,7 +171,8 @@ export default function AddEditSession() {
       >
         <View style={styles.content}>
           <Text style={styles.description}>
-            Schedule a time to show up for yourself. You'll receive a call at this time.
+            Schedule a time to show up for yourself. You'll receive a call at
+            this time.
           </Text>
 
           <View style={styles.inputSection}>
@@ -175,7 +188,8 @@ export default function AddEditSession() {
               </Text>
             </View>
             <Text style={styles.hint}>
-              To change the date, go back to the calendar and select a different day.
+              To change the date, go back to the calendar and select a different
+              day.
             </Text>
           </View>
 
@@ -184,11 +198,17 @@ export default function AddEditSession() {
             <View style={styles.timePicker}>
               <View style={styles.timeColumn}>
                 <Text style={styles.timeColumnLabel}>Hour</Text>
-                <ScrollView style={styles.timeScroll} showsVerticalScrollIndicator={false}>
+                <ScrollView
+                  style={styles.timeScroll}
+                  showsVerticalScrollIndicator={false}
+                >
                   {hours.map((h) => (
                     <TouchableOpacity
                       key={h}
-                      style={[styles.timeOption, hour === h && styles.timeOptionSelected]}
+                      style={[
+                        styles.timeOption,
+                        hour === h && styles.timeOptionSelected,
+                      ]}
                       onPress={() => setHour(h)}
                     >
                       <Text
@@ -206,7 +226,10 @@ export default function AddEditSession() {
 
               <View style={styles.timeColumn}>
                 <Text style={styles.timeColumnLabel}>Minute</Text>
-                <ScrollView style={styles.timeScroll} showsVerticalScrollIndicator={false}>
+                <ScrollView
+                  style={styles.timeScroll}
+                  showsVerticalScrollIndicator={false}
+                >
                   {minutes.map((m) => (
                     <TouchableOpacity
                       key={m}
@@ -384,7 +407,7 @@ const styles = StyleSheet.create({
   },
   timeOptionTextSelected: {
     color: Colors.white,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   periodContainer: {
     gap: Responsive.v.sm,
@@ -404,7 +427,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     fontWeight: "700",
     color: Colors.primary,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   periodButtonTextSelected: {
     color: Colors.white,
@@ -426,4 +449,3 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
 });
-

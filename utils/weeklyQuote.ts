@@ -40,7 +40,6 @@ export async function getWeeklyQuote(): Promise<string | null> {
 
     return quote.text;
   } catch (error) {
-    console.error("Error getting weekly quote:", error);
     return null;
   }
 }
@@ -63,7 +62,6 @@ export async function saveWeeklyQuote(quoteText: string): Promise<void> {
 
     await AsyncStorage.setItem(WEEKLY_QUOTE_KEY, JSON.stringify(quote));
   } catch (error) {
-    console.error("Error saving weekly quote:", error);
     throw error;
   }
 }
@@ -75,7 +73,7 @@ export async function deleteWeeklyQuote(): Promise<void> {
   try {
     await AsyncStorage.removeItem(WEEKLY_QUOTE_KEY);
   } catch (error) {
-    console.error("Error deleting weekly quote:", error);
+    // Error deleting weekly quote
   }
 }
 
@@ -102,7 +100,6 @@ export async function getDaysRemaining(): Promise<number | null> {
 
     return diffDays > 0 ? diffDays : 0;
   } catch (error) {
-    console.error("Error getting days remaining:", error);
     return null;
   }
 }

@@ -10,9 +10,21 @@ interface Screen5Props {
   weekStartDate: Date;
 }
 
-const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAYS = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
 
-export default function Screen5({ selectedDays, onDayToggle, weekStartDate }: Screen5Props) {
+export default function Screen5({
+  selectedDays,
+  onDayToggle,
+  weekStartDate,
+}: Screen5Props) {
   const formatWeekDate = (date: Date) => {
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const day = date.getDate().toString().padStart(2, "0");
@@ -32,11 +44,13 @@ export default function Screen5({ selectedDays, onDayToggle, weekStartDate }: Sc
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Your Week Reimagined</Text>
-      
+
       <View style={styles.weekPill}>
-        <Text style={styles.weekText}>Week of {formatWeekDate(weekStartDate)}</Text>
+        <Text style={styles.weekText}>
+          Week of {formatWeekDate(weekStartDate)}
+        </Text>
       </View>
-      
+
       <Text style={styles.recommendation}>
         We recommend 5x a week but you ultimately decide
       </Text>
@@ -45,7 +59,7 @@ export default function Screen5({ selectedDays, onDayToggle, weekStartDate }: Sc
         {DAYS.map((day, index) => {
           const dayData = selectedDays.find((d) => d.day === day);
           const isSelected = dayData?.selected || false;
-          
+
           return (
             <TouchableOpacity
               key={day}
@@ -56,12 +70,7 @@ export default function Screen5({ selectedDays, onDayToggle, weekStartDate }: Sc
               ]}
               onPress={() => onDayToggle(day)}
             >
-              <Text
-                style={[
-                  styles.dayText,
-                  { color: getDayTextColor(index) },
-                ]}
-              >
+              <Text style={[styles.dayText, { color: getDayTextColor(index) }]}>
                 {day}
               </Text>
             </TouchableOpacity>
@@ -83,7 +92,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
     marginBottom: Responsive.v.lg,
     textAlign: "center",
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   weekPill: {
     backgroundColor: Colors.backgroundAccent,

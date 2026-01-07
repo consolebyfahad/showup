@@ -24,7 +24,6 @@ export async function getAllVisionBoards(): Promise<VisionBoard[]> {
     }
     return JSON.parse(boardsJson);
   } catch (error) {
-    console.error("Error getting vision boards:", error);
     return [];
   }
 }
@@ -45,7 +44,6 @@ export async function saveVisionBoard(board: VisionBoard): Promise<void> {
     
     await AsyncStorage.setItem(VISION_BOARD_KEY, JSON.stringify(boards));
   } catch (error) {
-    console.error("Error saving vision board:", error);
     throw error;
   }
 }
@@ -61,7 +59,6 @@ export async function getCurrentVisionBoard(): Promise<VisionBoard | null> {
     }
     return JSON.parse(boardJson);
   } catch (error) {
-    console.error("Error getting current vision board:", error);
     return null;
   }
 }
@@ -77,7 +74,6 @@ export async function setCurrentVisionBoard(board: VisionBoard | null): Promise<
       await AsyncStorage.removeItem(CURRENT_VISION_BOARD_KEY);
     }
   } catch (error) {
-    console.error("Error setting current vision board:", error);
     throw error;
   }
 }
@@ -90,7 +86,6 @@ export async function incrementVisionBoardProgress(): Promise<void> {
   try {
     const currentBoard = await getCurrentVisionBoard();
     if (!currentBoard) {
-      console.log("No current vision board to update");
       return;
     }
 
@@ -108,12 +103,8 @@ export async function incrementVisionBoardProgress(): Promise<void> {
 
     await saveVisionBoard(updatedBoard);
     await setCurrentVisionBoard(updatedBoard);
-    
-    console.log(
-      `Vision board progress: ${newCompletedSessions}/${currentBoard.totalSessions} sessions`
-    );
   } catch (error) {
-    console.error("Error incrementing vision board progress:", error);
+    // Error incrementing vision board progress
   }
 }
 

@@ -76,7 +76,7 @@ export default function Calendar() {
 
       setSessions(calendarSessions);
     } catch (error) {
-      console.error("Error loading sessions:", error);
+      // Error loading sessions
     }
   }, [currentWeek]);
 
@@ -123,7 +123,7 @@ export default function Calendar() {
       await deleteSession(sessionId);
       await loadSessions();
     } catch (error) {
-      console.error("Error deleting session:", error);
+      // Error deleting session
     }
   };
 

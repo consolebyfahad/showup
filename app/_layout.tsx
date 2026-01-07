@@ -29,8 +29,6 @@ export default function RootLayout() {
   // Load custom fonts
   const [fontsLoaded, fontError] = useFonts({
     "Avenir-Regular": require("../assets/fonts/Avenir Regular.ttf"),
-    "Avenir-Light": require("../assets/fonts/Avenir Light.ttf"),
-    "Avenir-Book": require("../assets/fonts/Avenir Book.ttf"),
     "Avenir-Heavy": require("../assets/fonts/Avenir Heavy.ttf"),
     "Avenir-Black": require("../assets/fonts/Avenir Black.ttf"),
     "SlacksideOne-Regular": require("../assets/fonts/SlacksideOne-Regular.ttf"),
@@ -51,7 +49,6 @@ export default function RootLayout() {
     // Listen for notifications received while app is foregrounded
     notificationListener.current =
       Notifications.addNotificationReceivedListener(async (notification) => {
-        console.log("📬 Notification received:", notification);
         const data = notification.request.content.data;
 
         // Reschedule the notification for next week
@@ -59,9 +56,6 @@ export default function RootLayout() {
           // Note: We need to reconstruct the time from the notification data
           // For now, we'll reschedule all notifications when app starts
           // A better approach would be to store the time in the notification data
-          console.log(
-            "🔄 Notification fired, will reschedule on next app start"
-          );
         }
       });
 

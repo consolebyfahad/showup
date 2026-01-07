@@ -45,7 +45,7 @@ export default function Album() {
       );
       setVisionBoards(boards);
     } catch (error) {
-      console.error("Error loading vision boards:", error);
+      // Error loading vision boards
     } finally {
       setIsLoading(false);
     }
@@ -93,8 +93,16 @@ export default function Album() {
         </View>
         <View style={styles.boardInfo}>
           <Text style={styles.weekText}>
-            Week of {weekStart.toLocaleDateString("en-US", { month: "short", day: "numeric" })} -{" "}
-            {weekEnd.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+            Week of{" "}
+            {weekStart.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}{" "}
+            -{" "}
+            {weekEnd.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}
           </Text>
           <Text style={styles.progressText}>
             {item.completedSessions}/{item.totalSessions} sessions
@@ -163,7 +171,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: Colors.primary,
     marginBottom: Responsive.v.xs,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   subtitle: {
     fontSize: Responsive.f.sm,
@@ -191,7 +199,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.darkGray,
     marginBottom: Responsive.v.sm,
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   emptySubtext: {
     fontSize: Responsive.f.md,
@@ -269,7 +277,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xs,
     color: Colors.white,
     fontWeight: "600",
-    fontFamily: Fonts.avenir.heavy,
+    fontFamily: Fonts.avenir.semibold,
   },
   boardInfo: {
     padding: Responsive.md,
@@ -287,4 +295,3 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.slackside,
   },
 });
-
