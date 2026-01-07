@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -50,7 +51,27 @@ export default function ProfileEdit() {
           setBirthday(new Date(profile.birthday));
         }
         if (profile.profileImage) {
-          setProfileImage(profile.profileImage);
+          // Verify the image file still exists
+          try {
+            const fileInfo = await FileSystem.getInfoAsync(
+              profile.profileImage
+            );
+            if (fileInfo.exists) {
+              setProfileImage(profile.profileImage);
+            } else {
+              // File doesn't exist, clear it from profile
+              const updatedProfile = { ...profile, profileImage: null };
+              await AsyncStorage.setItem(
+                PROFILE_STORAGE_KEY,
+                JSON.stringify(updatedProfile)
+              );
+              setProfileImage(null);
+            }
+          } catch (error) {
+            // If file check fails (e.g., old cache URI), try to use the URI anyway
+            // User might need to re-upload if it doesn't work
+            setProfileImage(profile.profileImage);
+          }
         }
       }
     } catch (error) {
@@ -78,7 +99,40 @@ export default function ProfileEdit() {
     });
 
     if (!result.canceled && result.assets[0]) {
-      setProfileImage(result.assets[0].uri);
+      try {
+        // Copy image to permanent document directory
+        const fileName = `profile-image-${Date.now()}.jpg`;
+        // Use documentDirectory from FileSystem (may need @ts-ignore if types are wrong)
+        const documentDir = (FileSystem as any).documentDirectory;
+        if (!documentDir) {
+          throw new Error("Document directory not available");
+        }
+        const permanentUri = `${documentDir}${fileName}`;
+
+        // Copy the file to permanent location
+        await FileSystem.copyAsync({
+          from: result.assets[0].uri,
+          to: permanentUri,
+        });
+
+        // Delete old profile image if it exists and is in document directory
+        if (
+          profileImage &&
+          documentDir &&
+          profileImage.startsWith(documentDir)
+        ) {
+          try {
+            await FileSystem.deleteAsync(profileImage, { idempotent: true });
+          } catch (error) {
+            // Ignore errors when deleting old image
+          }
+        }
+
+        setProfileImage(permanentUri);
+      } catch (error) {
+        // If copying fails, use the original URI as fallback
+        setProfileImage(result.assets[0].uri);
+      }
     }
   };
 
@@ -227,6 +281,8 @@ export default function ProfileEdit() {
                     }
                   }}
                   maximumDate={new Date()}
+                  textColor={Colors.black}
+                  themeVariant="light"
                 />
               </View>
             </View>
@@ -379,9 +435,10 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     color: Colors.primary,
     fontWeight: "600",
-    fontFamily: Fonts.avenir.regular,
+    fontFamily: Fonts.slackside,
   },
   datePickerContainer: {
     alignItems: "center",
+    backgroundColor: Colors.white,
   },
 });

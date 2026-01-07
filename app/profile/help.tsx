@@ -150,7 +150,7 @@ export default function HelpFeedback() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.backgroundAccent,
+    backgroundColor: Colors.white,
   },
   scrollView: {
     flex: 1,
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.xl,
     fontWeight: "700",
     color: Colors.black,
-    marginBottom: Responsive.v.md,
+    marginBottom: Responsive.v.lg,
     fontFamily: Fonts.avenir.semibold,
   },
   sectionDescription: {
@@ -179,8 +179,16 @@ const styles = StyleSheet.create({
   faqItem: {
     marginBottom: Responsive.v.lg,
     paddingBottom: Responsive.v.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.lightGray,
+    padding: Responsive.lg,
+    backgroundColor: Colors.white,
+    borderRadius: Responsive.r.md,
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   faqQuestion: {
     flexDirection: "row",
@@ -212,6 +220,7 @@ const styles = StyleSheet.create({
     padding: Responsive.lg,
     fontSize: Responsive.f.md,
     color: Colors.black,
+    backgroundColor: Colors.white,
     minHeight: rVerticalScale(120),
     marginBottom: Responsive.v.lg,
     fontFamily: Fonts.slackside,
@@ -241,9 +250,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: Responsive.lg,
-    backgroundColor: Colors.backgroundAccent,
+    backgroundColor: Colors.white,
     borderRadius: Responsive.r.md,
     marginTop: Responsive.v.sm,
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   contactText: {
     fontSize: Responsive.f.md,

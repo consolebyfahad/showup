@@ -1,12 +1,6 @@
-import React, { useEffect, useRef } from "react";
-import {
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View, Modal } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { Colors } from "../../constants/colors";
 import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
@@ -21,21 +15,25 @@ interface Screen6Props {
   }) => void;
 }
 
-const ITEM_HEIGHT = rVerticalScale(50);
-const VISIBLE_ITEMS = 3; // Number of items visible (odd number for center selection)
-
 export default function Screen6({
   currentDay,
   selectedTime,
   onTimeChange,
 }: Screen6Props) {
-  const hours = Array.from({ length: 12 }, (_, i) => i + 1);
-  const minutes = [0, 15, 30, 45]; // Common minute intervals
-  const periods: ("AM" | "PM")[] = ["AM", "PM"];
+  const [showPicker, setShowPicker] = useState(false);
 
-  const hourScrollRef = useRef<ScrollView>(null);
-  const minuteScrollRef = useRef<ScrollView>(null);
-  const periodScrollRef = useRef<ScrollView>(null);
+  // Convert 12-hour format to Date object for DateTimePicker
+  const getDateFromTime = () => {
+    const date = new Date();
+    let hour24 = selectedTime.hour;
+    if (selectedTime.period === "PM" && selectedTime.hour !== 12) {
+      hour24 = selectedTime.hour + 12;
+    } else if (selectedTime.period === "AM" && selectedTime.hour === 12) {
+      hour24 = 0;
+    }
+    date.setHours(hour24, selectedTime.minute, 0, 0);
+    return date;
+  };
 
   const formatTime = () => {
     const hour = selectedTime.hour.toString().padStart(2, "0");
@@ -43,145 +41,35 @@ export default function Screen6({
     return `${hour}:${minute} ${selectedTime.period}`;
   };
 
-  // Calculate initial scroll position for selected values
-  const getInitialScrollY = (
-    value: number | string,
-    items: (number | string)[]
-  ): number => {
-    const index = items.indexOf(value);
-    if (index === -1) return 0;
-    return index * ITEM_HEIGHT;
-  };
+  const handleTimeChange = (event: any, date?: Date) => {
+    if (date && event.type !== "dismissed") {
+      let hour = date.getHours();
+      const minute = date.getMinutes();
+      let period: "AM" | "PM" = "AM";
 
-  // Scroll to selected value on mount
-  useEffect(() => {
-    const hourIndex = hours.indexOf(selectedTime.hour);
-    if (hourIndex !== -1 && hourScrollRef.current) {
-      setTimeout(() => {
-        hourScrollRef.current?.scrollTo({
-          y: hourIndex * ITEM_HEIGHT,
-          animated: false,
-        });
-      }, 100);
-    }
-  }, []);
+      if (hour === 0) {
+        hour = 12;
+        period = "AM";
+      } else if (hour === 12) {
+        hour = 12;
+        period = "PM";
+      } else if (hour > 12) {
+        hour = hour - 12;
+        period = "PM";
+      } else {
+        period = "AM";
+      }
 
-  useEffect(() => {
-    const minuteIndex = minutes.indexOf(selectedTime.minute);
-    if (minuteIndex !== -1 && minuteScrollRef.current) {
-      setTimeout(() => {
-        minuteScrollRef.current?.scrollTo({
-          y: minuteIndex * ITEM_HEIGHT,
-          animated: false,
-        });
-      }, 100);
-    }
-  }, []);
-
-  useEffect(() => {
-    const periodIndex = periods.indexOf(selectedTime.period);
-    if (periodIndex !== -1 && periodScrollRef.current) {
-      setTimeout(() => {
-        periodScrollRef.current?.scrollTo({
-          y: periodIndex * ITEM_HEIGHT,
-          animated: false,
-        });
-      }, 100);
-    }
-  }, []);
-
-  const handleScroll = (
-    event: NativeSyntheticEvent<NativeScrollEvent>,
-    items: (number | string)[],
-    type: "hour" | "minute" | "period"
-  ) => {
-    const y = event.nativeEvent.contentOffset.y;
-    const index = Math.round(y / ITEM_HEIGHT);
-    const clampedIndex = Math.max(0, Math.min(index, items.length - 1));
-    const selectedValue = items[clampedIndex];
-
-    if (type === "hour" && selectedValue !== selectedTime.hour) {
-      onTimeChange({ hour: selectedValue as number });
-    } else if (type === "minute" && selectedValue !== selectedTime.minute) {
-      onTimeChange({ minute: selectedValue as number });
-    } else if (type === "period" && selectedValue !== selectedTime.period) {
-      onTimeChange({ period: selectedValue as "AM" | "PM" });
+      onTimeChange({ hour, minute, period });
     }
   };
 
-  const handleMomentumScrollEnd = (
-    event: NativeSyntheticEvent<NativeScrollEvent>,
-    items: (number | string)[],
-    scrollRef: React.RefObject<ScrollView | null>
-  ) => {
-    const y = event.nativeEvent.contentOffset.y;
-    const index = Math.round(y / ITEM_HEIGHT);
-    const clampedIndex = Math.max(0, Math.min(index, items.length - 1));
-    const snapY = clampedIndex * ITEM_HEIGHT;
-
-    scrollRef.current?.scrollTo({
-      y: snapY,
-      animated: true,
-    });
+  const handleDone = () => {
+    setShowPicker(false);
   };
 
-  const renderPickerWheel = (
-    items: (number | string)[],
-    selectedValue: number | string,
-    type: "hour" | "minute" | "period",
-    scrollRef: React.RefObject<ScrollView | null>
-  ) => {
-    const paddingTop = ITEM_HEIGHT * Math.floor(VISIBLE_ITEMS / 2);
-    const paddingBottom = ITEM_HEIGHT * Math.floor(VISIBLE_ITEMS / 2);
-
-    return (
-      <View style={styles.pickerContainer}>
-        {/* Selection indicator overlay */}
-        <View style={styles.selectionIndicator} pointerEvents="none" />
-
-        <ScrollView
-          ref={scrollRef}
-          style={styles.pickerScroll}
-          contentContainerStyle={{
-            paddingTop,
-            paddingBottom,
-          }}
-          showsVerticalScrollIndicator={false}
-          snapToInterval={ITEM_HEIGHT}
-          decelerationRate="fast"
-          onScroll={(e) => handleScroll(e, items, type)}
-          onMomentumScrollEnd={(e) =>
-            handleMomentumScrollEnd(e, items, scrollRef)
-          }
-          scrollEventThrottle={16}
-        >
-          {items.map((item, index) => {
-            const isSelected = item === selectedValue;
-            return (
-              <View
-                key={`${item}-${index}`}
-                style={[
-                  styles.pickerItem,
-                  { height: ITEM_HEIGHT },
-                  isSelected && styles.pickerItemSelected,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.pickerItemText,
-                    isSelected && styles.pickerItemTextSelected,
-                  ]}
-                >
-                  {typeof item === "number"
-                    ? item.toString().padStart(2, "0")
-                    : item}
-                </Text>
-              </View>
-            );
-          })}
-        </ScrollView>
-      </View>
-    );
+  const handleCancel = () => {
+    setShowPicker(false);
   };
 
   return (
@@ -191,29 +79,19 @@ export default function Screen6({
       </View>
 
       <Text style={styles.questionText}>You'll do this when?</Text>
-
-      <View style={styles.timePickerContainer}>
-        {renderPickerWheel(hours, selectedTime.hour, "hour", hourScrollRef)}
-
-        <Text style={styles.timeSeparator}>:</Text>
-
-        {renderPickerWheel(
-          minutes,
-          selectedTime.minute,
-          "minute",
-          minuteScrollRef
-        )}
-
-        {renderPickerWheel(
-          periods,
-          selectedTime.period,
-          "period",
-          periodScrollRef
-        )}
+      <View style={styles.pickerContainer}>
+        <DateTimePicker
+          value={getDateFromTime()}
+          mode="time"
+          display="spinner"
+          onChange={handleTimeChange}
+          textColor={Colors.black}
+          themeVariant="light"
+        />
       </View>
 
-      <View style={styles.selectedTimeDisplay}>
-        <Text style={styles.selectedTimeText}>{formatTime()}</Text>
+      <View style={styles.timeDisplay}>
+        <Text style={styles.timeText}>{formatTime()}</Text>
       </View>
     </View>
   );
@@ -246,77 +124,71 @@ const styles = StyleSheet.create({
     lineHeight: Responsive.f.xxxl * 1.3,
     fontFamily: Fonts.avenir.semibold,
   },
-  timePickerContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: rVerticalScale(20),
+  timePickerButton: {
+    marginTop: Responsive.v.xl,
     marginBottom: Responsive.v.lg,
-    gap: Responsive.g.sm,
-    height: ITEM_HEIGHT * VISIBLE_ITEMS,
   },
-  pickerContainer: {
-    flex: 1,
-    height: ITEM_HEIGHT * VISIBLE_ITEMS,
-    position: "relative",
-    overflow: "hidden",
-  },
-  pickerScroll: {
-    flex: 1,
-  },
-  selectionIndicator: {
-    position: "absolute",
-    top: ITEM_HEIGHT * Math.floor(VISIBLE_ITEMS / 2),
-    left: 0,
-    right: 0,
-    height: ITEM_HEIGHT,
+  timeDisplay: {
     backgroundColor: Colors.backgroundAccent,
-    borderRadius: Responsive.r.sm,
-    zIndex: 1,
-    opacity: 0.2,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: Colors.primary,
-    borderStyle: "dashed",
-  },
-  pickerItem: {
-    justifyContent: "center",
+    borderRadius: Responsive.r.lg,
+    padding: Responsive.xl,
     alignItems: "center",
-    height: ITEM_HEIGHT,
   },
-  pickerItemSelected: {
-    // Selected item styling is handled by text
+  timeText: {
+    fontSize: Responsive.f.xxxl,
+    fontWeight: "700",
+    color: Colors.primary,
+    fontFamily: Fonts.avenir.semibold,
   },
-  pickerItemText: {
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "flex-end",
+  },
+  pickerModalContent: {
+    backgroundColor: Colors.white,
+    borderTopLeftRadius: Responsive.r.xl,
+    borderTopRightRadius: Responsive.r.xl,
+    paddingBottom: Responsive.v.xl,
+  },
+  pickerHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: Responsive.xl,
+    paddingVertical: Responsive.v.md,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.lightGray,
+  },
+  cancelButton: {
+    paddingVertical: Responsive.v.sm,
+    paddingHorizontal: Responsive.md,
+  },
+  cancelButtonText: {
     fontSize: Responsive.f.md,
     color: Colors.gray,
+    fontWeight: "500",
+    fontFamily: Fonts.slackside,
+  },
+  pickerTitle: {
+    fontSize: Responsive.f.lg,
+    fontWeight: "600",
+    color: Colors.black,
+    fontFamily: Fonts.avenir.semibold,
+  },
+  doneButton: {
+    paddingVertical: Responsive.v.sm,
+    paddingHorizontal: Responsive.md,
+  },
+  doneButtonText: {
+    fontSize: Responsive.f.md,
+    color: Colors.primary,
+    fontWeight: "600",
     fontFamily: Fonts.avenir.regular,
   },
-  pickerItemTextSelected: {
-    fontSize: Responsive.f.xl,
-    fontWeight: "700",
-    color: Colors.black,
-    fontFamily: Fonts.avenir.semibold,
-  },
-  timeSeparator: {
-    fontSize: Responsive.f.xxxl,
-    fontWeight: "600",
-    color: Colors.black,
-    marginHorizontal: Responsive.sm,
-    fontFamily: Fonts.avenir.semibold,
-  },
-  selectedTimeDisplay: {
-    backgroundColor: Colors.backgroundAccent,
-    borderRadius: Responsive.r.md,
-    padding: Responsive.lg,
+  pickerContainer: {
     alignItems: "center",
-    marginTop: Responsive.v.lg,
-    marginBottom: Responsive.v.xl,
-  },
-  selectedTimeText: {
-    fontSize: Responsive.f.xl,
-    fontWeight: "600",
-    color: Colors.black,
-    fontFamily: Fonts.avenir.semibold,
+    backgroundColor: Colors.white,
+    paddingVertical: Responsive.v.md,
   },
 });

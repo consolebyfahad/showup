@@ -9,6 +9,7 @@ import {
   getColorProgress,
   VisionBoard,
 } from "../../utils/visionBoard";
+import { Grayscale } from "react-native-color-matrix-image-filters";
 
 interface VisionBoardProps {
   onPress?: () => void;
@@ -68,6 +69,22 @@ export default function VisionBoardComponent({ onPress }: VisionBoardProps) {
   }
 
   const progress = getColorProgress(visionBoard);
+  // Calculate how much of the image should be revealed (from bottom)
+  // 0% = fully grayscale, 100% = fully colored
+  const revealPercentage = progress;
+  // Grayscale overlay covers the top portion that hasn't been revealed yet
+  // At 0/7: progress = 0%, grayscaleHeight = 100% (fully grayscale)
+  // At 7/7: progress = 100%, grayscaleHeight = 0% (fully colored)
+  const grayscaleHeight = Math.max(0, Math.min(100, 100 - revealPercentage));
+
+  // Debug: Log values to verify
+  // console.log('Vision Board Progress:', {
+  //   completed: visionBoard.completedSessions,
+  //   total: visionBoard.totalSessions,
+  //   progress,
+  //   revealPercentage,
+  //   grayscaleHeight
+  // });
 
   return (
     <View style={styles.container}>
@@ -78,31 +95,33 @@ export default function VisionBoardComponent({ onPress }: VisionBoardProps) {
         activeOpacity={0.9}
       >
         <View style={styles.imageWrapper}>
-          {/* Base monochrome (black & white) image - always visible */}
-          <View style={styles.baseImageContainer}>
-            <Image
-              source={{ uri: visionBoard.imageUri }}
-              style={styles.image}
-              resizeMode="cover"
-            />
-            {/* True monochrome overlay - creates black and white effect */}
-            <View style={styles.monochromeOverlay} />
-          </View>
-          {/* Colored version - fades in as progress increases */}
-          <View
-            style={[
-              styles.colorOverlay,
-              {
-                opacity: Math.min(1, progress / 100),
-              },
-            ]}
-          >
-            <Image
-              source={{ uri: visionBoard.imageUri }}
-              style={styles.image}
-              resizeMode="cover"
-            />
-          </View>
+          {/* Base colored image - always visible */}
+          <Image
+            source={{ uri: visionBoard.imageUri }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+
+          {/* Grayscale overlay that covers the unrevealed portion from top */}
+          {grayscaleHeight > 0 && (
+            <View
+              style={[
+                styles.grayscaleOverlay,
+                {
+                  height: `${grayscaleHeight}%`,
+                },
+              ]}
+            >
+              <Grayscale>
+                <Image
+                  source={{ uri: visionBoard.imageUri }}
+                  style={styles.grayscaleImage}
+                  resizeMode="cover"
+                />
+              </Grayscale>
+            </View>
+          )}
+
           {/* Progress indicator */}
           <View style={styles.progressOverlay}>
             <View style={styles.progressBar}>
@@ -149,33 +168,20 @@ const styles = StyleSheet.create({
     width: "100%",
     height: rVerticalScale(300),
     position: "relative",
-  },
-  baseImageContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
+    overflow: "hidden",
   },
   image: {
     width: "100%",
     height: "100%",
   },
-  monochromeOverlay: {
+  grayscaleOverlay: {
     position: "absolute",
     top: 0,
     left: 0,
     width: "100%",
-    height: "100%",
-    // True monochrome effect: creates black and white by desaturating colors
-    // Using a gray overlay with high opacity to create monochrome appearance
-    backgroundColor: "rgba(0, 0, 0, 0.3)", // Dark overlay for monochrome effect
-    // This creates a desaturated, black and white appearance
+    overflow: "hidden",
   },
-  colorOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
+  grayscaleImage: {
     width: "100%",
     height: "100%",
   },

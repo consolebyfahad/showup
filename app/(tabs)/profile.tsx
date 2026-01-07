@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as FileSystem from "expo-file-system";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -16,33 +17,6 @@ interface UserProfile {
   profileImage: string | null;
 }
 
-const logAllStorage = async () => {
-  try {
-    const keys = await AsyncStorage.getAllKeys();
-    const stores = await AsyncStorage.multiGet(keys);
-
-    // Parse and format storage contents for better readability
-    const formattedStorage: Record<string, any> = {};
-    stores.forEach(([key, value]) => {
-      try {
-        // Try to parse JSON values
-        formattedStorage[key] = value ? JSON.parse(value) : null;
-      } catch {
-        // If not JSON, keep as string
-        formattedStorage[key] = value;
-      }
-    });
-
-    console.log("=== AsyncStorage Contents ===");
-    console.log(JSON.stringify(formattedStorage, null, 2));
-    console.log("=== End Storage Contents ===");
-  } catch (e) {
-    // Silently handle errors
-  }
-};
-
-// call it anywhere (useEffect, button press, etc.)
-logAllStorage();
 
 export default function Profile() {
   const router = useRouter();
@@ -54,6 +28,26 @@ export default function Profile() {
       const profileJson = await AsyncStorage.getItem(PROFILE_STORAGE_KEY);
       if (profileJson) {
         const profile: UserProfile = JSON.parse(profileJson);
+
+        // Verify profile image file exists
+        if (profile.profileImage) {
+          try {
+            const fileInfo = await FileSystem.getInfoAsync(
+              profile.profileImage
+            );
+            if (!fileInfo.exists) {
+              // File doesn't exist, clear it from profile
+              profile.profileImage = null;
+              await AsyncStorage.setItem(
+                PROFILE_STORAGE_KEY,
+                JSON.stringify(profile)
+              );
+            }
+          } catch (error) {
+            // If file check fails, keep the URI and let Image component handle it
+          }
+        }
+
         setProfileData(profile);
       } else {
         // Default profile if none exists
@@ -143,7 +137,7 @@ export default function Profile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.backgroundAccent,
+    backgroundColor: Colors.white,
   },
   scrollView: {
     flex: 1,
@@ -153,6 +147,7 @@ const styles = StyleSheet.create({
   },
   menuSection: {
     marginTop: Responsive.v.lg,
+    paddingHorizontal: Responsive.xl,
   },
   logoutContainer: {
     marginTop: Responsive.v.xxl,

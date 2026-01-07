@@ -95,7 +95,7 @@ export default function Subscription() {
         {/* Benefits Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Why Upgrade?</Text>
-          <View style={styles.benefitItem}>
+          <View style={[styles.benefitItem, styles.benefitItem1]}>
             <Ionicons
               name="flame"
               size={rScale(24)}
@@ -111,7 +111,7 @@ export default function Subscription() {
             </View>
           </View>
 
-          <View style={styles.benefitItem}>
+          <View style={[styles.benefitItem, styles.benefitItem2]}>
             <Ionicons
               name="image"
               size={rScale(24)}
@@ -127,7 +127,7 @@ export default function Subscription() {
             </View>
           </View>
 
-          <View style={styles.benefitItem}>
+          <View style={[styles.benefitItem, styles.benefitItem3]}>
             <Ionicons
               name="headset"
               size={rScale(24)}
@@ -160,7 +160,7 @@ export default function Subscription() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.backgroundAccent,
+    backgroundColor: Colors.white,
   },
   scrollView: {
     flex: 1,
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
   },
   section: {
     paddingHorizontal: Responsive.xl,
-    marginTop: Responsive.v.lg,
+    marginTop: Responsive.v.xl,
   },
   sectionTitle: {
     fontSize: Responsive.f.xl,
@@ -303,15 +303,25 @@ const styles = StyleSheet.create({
   },
   benefitItem: {
     flexDirection: "row",
-    backgroundColor: Colors.white,
-    borderRadius: Responsive.r.md,
+    borderRadius: Responsive.r.lg,
     padding: Responsive.lg,
     marginBottom: Responsive.v.md,
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
     shadowColor: Colors.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  benefitItem1: {
+    backgroundColor: "rgba(168, 197, 240, 0.15)", // tagBlue with 15% opacity
+  },
+  benefitItem2: {
+    backgroundColor: "rgba(184, 230, 184, 0.15)", // tagGreen with 15% opacity
+  },
+  benefitItem3: {
+    backgroundColor: "rgba(244, 194, 161, 0.15)", // tagOrange with 15% opacity
   },
   benefitIcon: {
     marginRight: Responsive.md,

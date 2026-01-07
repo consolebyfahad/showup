@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -11,7 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Header } from "../../components/common";
 import { Button } from "../../components/common";
 import { Colors } from "../../constants/colors";
@@ -119,22 +117,8 @@ export default function VisionBoardUpload() {
     }
   };
 
-  const handleContinueOld = async () => {
-    // User wants to continue with the previous week's board
-    const currentBoard = await getCurrentVisionBoard();
-    if (currentBoard && !currentBoard.isCompleted) {
-      // Keep the current board active
-      router.back();
-    } else {
-      Alert.alert(
-        "No active board",
-        "You don't have an active vision board to continue. Please upload a new one."
-      );
-    }
-  };
-
   return (
-    <SafeAreaView style={styles.container} edges={["top"]}>
+    <View style={styles.container}>
       <Header title="Upload Vision Board" />
       <ScrollView
         style={styles.scrollView}
@@ -204,16 +188,8 @@ export default function VisionBoardUpload() {
           disabled={!selectedImage || isLoading}
           loading={isLoading}
         />
-        <Button
-          title="Continue Previous Board"
-          variant="outline"
-          size="md"
-          onPress={handleContinueOld}
-          fullWidth
-          style={styles.continueButton}
-        />
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

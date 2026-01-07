@@ -7,6 +7,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Colors } from "../../constants/colors";
 import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
+import { Ionicons } from "@expo/vector-icons";
+import LottieView from "lottie-react-native";
 
 const PROFILE_STORAGE_KEY = "@yo_twin_user_profile";
 
@@ -61,7 +63,7 @@ export default function IncomingCall() {
           {/* Caller Info */}
           <View style={styles.callerInfo}>
             <View style={styles.profileImageContainer}>
-              {profileImage ? (
+              {/* {profileImage ? (
                 <Image
                   source={{ uri: profileImage }}
                   style={styles.profileImage}
@@ -72,12 +74,17 @@ export default function IncomingCall() {
                     {getInitials(userName)}
                   </Text>
                 </View>
-              )}
+              )} */}
+              <LottieView
+                source={require("../../assets/Lottie/Waving.json")}
+                autoPlay
+                loop
+                style={styles.profileImage}
+              />
             </View>
             <Text style={styles.callerName}>Yo Twin</Text>
             <Text style={styles.callSubtext}>It's time to start</Text>
             <View style={styles.videoIndicator}>
-              <Text style={styles.videoIcon}>📹</Text>
               <Text style={styles.videoText}>Video Call</Text>
             </View>
           </View>
@@ -88,10 +95,12 @@ export default function IncomingCall() {
             onPress={handleAnswer}
             activeOpacity={0.8}
           >
-            <View style={styles.answerButtonInner}>
-              <Text style={styles.answerIcon}>📞</Text>
-            </View>
-            <Text style={styles.answerText}>Answer</Text>
+            <LottieView
+              source={require("../../assets/Lottie/incoming call.json")}
+              autoPlay
+              loop
+              style={styles.incomingCallIcon}
+            />
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -119,13 +128,13 @@ const styles = StyleSheet.create({
   },
   profileImageContainer: {
     marginBottom: Responsive.v.xl,
+    borderRadius: rScale(99),
+    borderWidth: 4,
+    borderColor: Colors.white,
   },
   profileImage: {
     width: rScale(150),
     height: rScale(150),
-    borderRadius: rScale(75),
-    borderWidth: 4,
-    borderColor: Colors.white,
   },
   profilePlaceholder: {
     width: rScale(150),
@@ -154,14 +163,12 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.lg,
     color: Colors.white,
     opacity: 0.9,
-    marginBottom: Responsive.v.xl,
     fontFamily: Fonts.slackside,
   },
   videoIndicator: {
     flexDirection: "row",
     alignItems: "center",
     gap: Responsive.sm,
-    marginTop: Responsive.v.md,
   },
   videoIcon: {
     fontSize: Responsive.f.xl,
@@ -176,27 +183,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: Responsive.v.xxl,
   },
-  answerButtonInner: {
-    width: rScale(80),
-    height: rScale(80),
-    borderRadius: rScale(40),
-    backgroundColor: Colors.ctaHighlight,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: Colors.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-    marginBottom: Responsive.v.md,
-  },
-  answerIcon: {
-    fontSize: Responsive.f.xxxl,
-  },
-  answerText: {
-    fontSize: Responsive.f.xl,
-    fontWeight: "700",
-    color: Colors.white,
-    fontFamily: Fonts.avenir.semibold,
+
+  incomingCallIcon: {
+    width: rScale(160),
+    height: rScale(160),
   },
 });

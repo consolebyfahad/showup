@@ -1,12 +1,24 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Header } from "../../components/common";
 import { Colors } from "../../constants/colors";
 import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale } from "../../utils/responsive";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AboutYoTwin() {
+  const handleClearData = () => {
+    AsyncStorage.clear();
+    Alert.alert("App Data Cleared", "All app data has been cleared.");
+  };
   return (
     <View style={styles.container}>
       <Header title="About Yo Twin" />
@@ -37,7 +49,7 @@ export default function AboutYoTwin() {
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>How It Works</Text>
-            <View style={styles.featureItem}>
+            <View style={[styles.featureItem, styles.featureItem1]}>
               <Ionicons
                 name="calendar-outline"
                 size={rScale(20)}
@@ -53,7 +65,7 @@ export default function AboutYoTwin() {
               </View>
             </View>
 
-            <View style={styles.featureItem}>
+            <View style={[styles.featureItem, styles.featureItem2]}>
               <Ionicons
                 name="videocam-outline"
                 size={rScale(20)}
@@ -69,7 +81,7 @@ export default function AboutYoTwin() {
               </View>
             </View>
 
-            <View style={styles.featureItem}>
+            <View style={[styles.featureItem, styles.featureItem3]}>
               <Ionicons
                 name="flame-outline"
                 size={rScale(20)}
@@ -85,7 +97,7 @@ export default function AboutYoTwin() {
               </View>
             </View>
 
-            <View style={styles.featureItem}>
+            <View style={[styles.featureItem, styles.featureItem4]}>
               <Ionicons
                 name="image-outline"
                 size={rScale(20)}
@@ -100,6 +112,23 @@ export default function AboutYoTwin() {
                 </Text>
               </View>
             </View>
+            <TouchableOpacity
+              style={[styles.featureItem, styles.featureItem5]}
+              onPress={handleClearData}
+            >
+              <Ionicons
+                name="trash-outline"
+                size={rScale(20)}
+                color={Colors.primary}
+                style={styles.featureIcon}
+              />
+              <View style={styles.featureText}>
+                <Text style={styles.featureTitle}>Clear App Data</Text>
+                <Text style={styles.featureDescription}>
+                  Clear all app data and start fresh.
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.section}>
@@ -124,7 +153,7 @@ export default function AboutYoTwin() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.backgroundAccent,
+    backgroundColor: Colors.white,
   },
   scrollView: {
     flex: 1,
@@ -135,6 +164,7 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: Responsive.xl,
     paddingTop: Responsive.v.xl,
+    paddingBottom: Responsive.v.xl,
   },
   logoSection: {
     alignItems: "center",
@@ -160,6 +190,16 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: Responsive.v.xxl,
+    padding: Responsive.lg,
+    backgroundColor: Colors.white,
+    borderRadius: Responsive.r.md,
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   sectionTitle: {
     fontSize: Responsive.f.xl,
@@ -177,6 +217,25 @@ const styles = StyleSheet.create({
   featureItem: {
     flexDirection: "row",
     marginBottom: Responsive.v.lg,
+    padding: Responsive.md,
+    borderRadius: Responsive.r.sm,
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+  },
+  featureItem1: {
+    backgroundColor: "rgba(168, 197, 240, 0.15)", // tagBlue with 15% opacity
+  },
+  featureItem2: {
+    backgroundColor: "rgba(184, 230, 184, 0.15)", // tagGreen with 15% opacity
+  },
+  featureItem3: {
+    backgroundColor: "rgba(244, 194, 161, 0.15)", // tagOrange with 15% opacity
+  },
+  featureItem4: {
+    backgroundColor: "rgba(197, 211, 244, 0.2)", // backgroundAccent with 20% opacity
+  },
+  featureItem5: {
+    backgroundColor: "rgba(253, 238, 179, 0.25)", // cream with 25% opacity
   },
   featureIcon: {
     marginRight: Responsive.md,
@@ -202,5 +261,11 @@ const styles = StyleSheet.create({
     fontSize: Responsive.f.md,
     color: Colors.textSecondary,
     fontFamily: Fonts.slackside,
+  },
+  clearDataButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: Responsive.v.lg,
   },
 });

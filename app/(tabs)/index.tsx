@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as FileSystem from "expo-file-system";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
 import {
@@ -55,6 +56,26 @@ export default function Home() {
       const profileJson = await AsyncStorage.getItem(PROFILE_STORAGE_KEY);
       if (profileJson) {
         const profile: UserProfile = JSON.parse(profileJson);
+
+        // Verify profile image file exists
+        if (profile.profileImage) {
+          try {
+            const fileInfo = await FileSystem.getInfoAsync(
+              profile.profileImage
+            );
+            if (!fileInfo.exists) {
+              // File doesn't exist, clear it from profile
+              profile.profileImage = null;
+              await AsyncStorage.setItem(
+                PROFILE_STORAGE_KEY,
+                JSON.stringify(profile)
+              );
+            }
+          } catch (error) {
+            // If file check fails, keep the URI and let Image component handle it
+          }
+        }
+
         setProfileData(profile);
       } else {
         setProfileData({

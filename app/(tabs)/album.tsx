@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Grayscale } from "react-native-color-matrix-image-filters";
 import { Colors } from "../../constants/colors";
 import { Fonts } from "../../constants/fonts";
 import { Responsive, rScale, rVerticalScale } from "../../utils/responsive";
@@ -57,33 +58,42 @@ export default function Album() {
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekEnd.getDate() + 6);
 
+    // Calculate how much of the image should be revealed (from bottom)
+    // 0% = fully grayscale, 100% = fully colored
+    const revealPercentage = progress;
+    // Grayscale overlay covers the top portion that hasn't been revealed yet
+    const grayscaleHeight = Math.max(0, Math.min(100, 100 - revealPercentage));
+
     return (
       <TouchableOpacity style={styles.boardCard}>
         <View style={styles.imageWrapper}>
-          {/* Base grayscale image */}
-          <View style={styles.baseImageContainer}>
-            <Image
-              source={{ uri: item.imageUri }}
-              style={[styles.boardImage, styles.baseImage]}
-              resizeMode="cover"
-            />
-            <View style={styles.grayscaleOverlay} />
-          </View>
-          {/* Colored overlay */}
-          <View
-            style={[
-              styles.colorOverlay,
-              {
-                opacity: Math.min(1, progress / 100),
-              },
-            ]}
-          >
-            <Image
-              source={{ uri: item.imageUri }}
-              style={styles.boardImage}
-              resizeMode="cover"
-            />
-          </View>
+          {/* Base colored image - always visible */}
+          <Image
+            source={{ uri: item.imageUri }}
+            style={styles.boardImage}
+            resizeMode="cover"
+          />
+
+          {/* Grayscale overlay that covers the unrevealed portion from top */}
+          {grayscaleHeight > 0 && (
+            <View
+              style={[
+                styles.grayscaleOverlay,
+                {
+                  height: `${grayscaleHeight}%`,
+                },
+              ]}
+            >
+              <Grayscale>
+                <Image
+                  source={{ uri: item.imageUri }}
+                  style={styles.grayscaleImage}
+                  resizeMode="cover"
+                />
+              </Grayscale>
+            </View>
+          )}
+
           {/* Status badge */}
           <View style={styles.statusBadge}>
             <Text style={styles.statusText}>
@@ -229,16 +239,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: rVerticalScale(200),
     position: "relative",
-  },
-  baseImageContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-  },
-  baseImage: {
-    opacity: 0.3,
+    overflow: "hidden",
   },
   boardImage: {
     width: "100%",
@@ -249,15 +250,11 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    overflow: "hidden",
   },
-  colorOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
+  grayscaleImage: {
     width: "100%",
-    height: "100%",
+    height: rVerticalScale(200), // Full height to match container, so top portion is visible when clipped
   },
   statusBadge: {
     position: "absolute",

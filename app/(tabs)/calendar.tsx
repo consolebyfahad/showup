@@ -129,14 +129,12 @@ export default function Calendar() {
 
   const handleAddTask = () => {
     setShowAddMenu(false);
-    router.push("/sessions/add-edit");
+    router.push("/sessions/add-habit-task?type=task");
   };
 
   const handleAddHabit = () => {
     setShowAddMenu(false);
-    // Navigate to habit creation flow
-    // For now, we'll create a simple habit flow similar to task
-    router.push("/sessions/add-edit?type=habit");
+    router.push("/sessions/add-habit-task?type=habit");
   };
 
   return (
