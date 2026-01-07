@@ -57,10 +57,14 @@ export default function Calendar() {
       const calendarSessions: CalendarSession[] = weekSessions
         .filter((s) => !s.isCompleted) // Only show incomplete sessions
         .map((s) => {
-          const sessionDate = new Date(s.date);
+          // Parse date in local timezone to avoid day shift issues
+          const [year, month, day] = s.date.split("-").map(Number);
+          const sessionDate = new Date(year, month - 1, day);
+          const dayOfWeek = getDayOfWeek(sessionDate);
+
           return {
             id: s.id,
-            day: getDayOfWeek(sessionDate),
+            day: dayOfWeek,
             time: formatTime(s.hour, s.minute),
             title: s.title,
             color: s.color || Colors.tagBlue,

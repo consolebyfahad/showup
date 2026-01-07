@@ -19,16 +19,21 @@ import { Colors } from "../../constants/colors";
 import { OnboardingData } from "../../types/onboarding";
 import {
   requestNotificationPermissions,
-  scheduleDailyNotification,
+  scheduleWeeklyNotification,
+  cancelAllNotifications,
 } from "../../utils/notifications";
 import { Responsive, rVerticalScale } from "../../utils/responsive";
-import {
-  saveSession,
-  formatDate,
-  Session,
-} from "../../utils/sessions";
+import { saveSession, formatDate, Session } from "../../utils/sessions";
 
-const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAYS = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
 
 // Get current week start (Monday)
 const getCurrentWeekStart = () => {
@@ -45,7 +50,7 @@ export default function Onboarding() {
   const [currentStep, setCurrentStep] = useState(1);
   const [weekStartDate] = useState(getCurrentWeekStart());
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
-  
+
   const [data, setData] = useState<OnboardingData>({
     habits: ["", "", ""],
     primaryFocus: null,
@@ -87,9 +92,7 @@ export default function Onboarding() {
       }));
 
       // Check if there are more days without times
-      const nextUnsetDay = updatedDays.find(
-        (d) => d.selected && !d.time
-      );
+      const nextUnsetDay = updatedDays.find((d) => d.selected && !d.time);
       if (nextUnsetDay) {
         setData((prev) => ({
           ...prev,
@@ -119,13 +122,20 @@ export default function Onboarding() {
           JSON.stringify(data)
         );
 
-        // Request notification permissions and schedule daily notifications
+        // Request notification permissions and schedule weekly notifications
         const hasPermission = await requestNotificationPermissions();
         if (hasPermission) {
+          // Cancel all existing notifications first
+          await cancelAllNotifications();
+
           // Schedule notifications for all selected days
           for (const daySchedule of data.selectedDays) {
             if (daySchedule.selected && daySchedule.time) {
-              await scheduleDailyNotification(daySchedule.time);
+              // Get day index (0 = Monday, 6 = Sunday)
+              const dayIndex = DAYS.indexOf(daySchedule.day);
+              if (dayIndex !== -1) {
+                await scheduleWeeklyNotification(dayIndex, daySchedule.time);
+              }
             }
           }
         }
@@ -148,8 +158,21 @@ export default function Onboarding() {
 
           // Find the date for this day of the week
           const dayIndex = DAYS.indexOf(daySchedule.day);
+          if (dayIndex === -1) {
+            console.error(`Invalid day: ${daySchedule.day}`);
+            continue;
+          }
           const sessionDate = new Date(weekStartDate);
           sessionDate.setDate(weekStartDate.getDate() + dayIndex);
+
+          // Debug: Verify the date is correct
+          console.log(
+            `Creating session for ${
+              daySchedule.day
+            } (index ${dayIndex}): date=${formatDate(
+              sessionDate
+            )}, day of week=${sessionDate.getDay()}`
+          );
 
           const session: Session = {
             id: `session-${Date.now()}-${daySchedule.day}`,
@@ -191,7 +214,9 @@ export default function Onboarding() {
         // All 3 habits must be filled (non-empty)
         return data.habits.filter((h) => h.trim().length > 0).length === 3;
       case 2:
-        return data.primaryFocus !== null && data.primaryFocus.trim().length > 0;
+        return (
+          data.primaryFocus !== null && data.primaryFocus.trim().length > 0
+        );
       case 3:
         return data.question.trim().length > 0;
       case 4:
@@ -242,10 +267,7 @@ export default function Onboarding() {
     switch (currentStep) {
       case 1:
         return (
-          <Screen1
-            habits={data.habits}
-            onHabitsChange={handleHabitsChange}
-          />
+          <Screen1 habits={data.habits} onHabitsChange={handleHabitsChange} />
         );
       case 2:
         return (
@@ -297,15 +319,17 @@ export default function Onboarding() {
           />
         );
       case 7:
-        return <Screen7 selectedDays={data.selectedDays} weekStartDate={weekStartDate} />;
+        return (
+          <Screen7
+            selectedDays={data.selectedDays}
+            weekStartDate={weekStartDate}
+          />
+        );
       case 8:
         return <Screen8 />;
       default:
         return (
-          <Screen1
-            habits={data.habits}
-            onHabitsChange={handleHabitsChange}
-          />
+          <Screen1 habits={data.habits} onHabitsChange={handleHabitsChange} />
         );
     }
   };

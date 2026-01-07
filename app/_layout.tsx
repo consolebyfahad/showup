@@ -6,22 +6,25 @@ import { useEffect, useRef } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Colors } from "../constants/colors";
+import { rescheduleAllWeeklyNotifications } from "../utils/notifications";
+import NotificationHandler from "../components/navigation/NotificationHandler";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
 // Configure notification handler
+// Note: shouldShowAlert is deprecated, using shouldShowBanner and shouldShowList instead
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowBanner: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
+    shouldShowList: true,
   }),
 });
 
 export default function RootLayout() {
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
+  const notificationListener = useRef<Notifications.Subscription | null>(null);
 
   // Load custom fonts
   const [fontsLoaded, fontError] = useFonts({
@@ -41,39 +44,33 @@ export default function RootLayout() {
   }, [fontsLoaded, fontError]);
 
   useEffect(() => {
+    // Reschedule all weekly notifications on app start
+    // This ensures notifications are always scheduled even if they were missed
+    rescheduleAllWeeklyNotifications();
+
     // Listen for notifications received while app is foregrounded
     notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        console.log("Notification received:", notification);
-      });
+      Notifications.addNotificationReceivedListener(async (notification) => {
+        console.log("📬 Notification received:", notification);
+        const data = notification.request.content.data;
 
-    // Listen for user tapping on or interacting with a notification
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("Notification response:", response);
-        const data = response.notification.request.content.data;
-
-        // Navigate to incoming call screen when notification is tapped
-        if (
-          data?.type === "incoming_call" ||
-          data?.screen === "/sessions/incoming-call"
-        ) {
-          // The navigation will be handled by the app's routing system
-          // The incoming call screen should be accessible
+        // Reschedule the notification for next week
+        if (data?.dayOfWeek !== undefined && data?.time) {
+          // Note: We need to reconstruct the time from the notification data
+          // For now, we'll reschedule all notifications when app starts
+          // A better approach would be to store the time in the notification data
+          console.log(
+            "🔄 Notification fired, will reschedule on next app start"
+          );
         }
       });
 
     return () => {
       if (notificationListener.current) {
-        Notifications.removeNotificationSubscription(
-          notificationListener.current
-        );
-      }
-      if (responseListener.current) {
-        Notifications.removeNotificationSubscription(responseListener.current);
+        notificationListener.current.remove();
       }
     };
-  }, []);
+  }, [fontsLoaded, fontError]);
 
   // Show loading screen while fonts are loading
   if (!fontsLoaded && !fontError) {

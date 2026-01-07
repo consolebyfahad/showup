@@ -1,5 +1,13 @@
-import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useRef } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { Colors } from "../../constants/colors";
 import { Fonts } from "../../constants/fonts";
 import { Responsive, rVerticalScale } from "../../utils/responsive";
@@ -11,6 +19,8 @@ interface Screen1Props {
 
 export default function Screen1({ habits, onHabitsChange }: Screen1Props) {
   const MAX_CHARACTERS = 35;
+  const scrollViewRef = useRef<ScrollView>(null);
+  const inputRefs = useRef<(TextInput | null)[]>([]);
 
   const handleHabitChange = (index: number, text: string) => {
     if (text.length <= MAX_CHARACTERS) {
@@ -20,37 +30,76 @@ export default function Screen1({ habits, onHabitsChange }: Screen1Props) {
     }
   };
 
+  const handleInputFocus = (index: number) => {
+    // Scroll to show the focused input, especially for the last one
+    if (index === 2) {
+      // For the last input, scroll to end after keyboard appears
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 300);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.questionText}>
-        What 3 habits are you struggling with?
-      </Text>
-      <View style={styles.inputsContainer}>
-        {[0, 1, 2].map((index) => (
-          <View key={index} style={styles.inputWrapper}>
-            <TextInput
-              style={styles.textInput}
-              placeholder={`Habit ${index + 1}`}
-              placeholderTextColor={Colors.gray}
-              value={habits[index] || ""}
-              onChangeText={(text) => handleHabitChange(index, text)}
-              maxLength={MAX_CHARACTERS}
-              autoFocus={index === 0}
-            />
-            <Text style={styles.characterCount}>
-              {(habits[index]?.length || 0)}/{MAX_CHARACTERS}
-            </Text>
-          </View>
-        ))}
-      </View>
-    </View>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+    >
+      <ScrollView
+        ref={scrollViewRef}
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <Text style={styles.questionText}>
+          What 3 habits are you struggling with?
+        </Text>
+        <View style={styles.inputsContainer}>
+          {[0, 1, 2].map((index) => (
+            <View key={index} style={styles.inputWrapper}>
+              <TextInput
+                ref={(ref) => {
+                  inputRefs.current[index] = ref;
+                }}
+                style={styles.textInput}
+                placeholder={`Habit ${index + 1}`}
+                placeholderTextColor={Colors.gray}
+                value={habits[index] || ""}
+                onChangeText={(text) => handleHabitChange(index, text)}
+                onFocus={() => handleInputFocus(index)}
+                maxLength={MAX_CHARACTERS}
+                autoFocus={index === 0}
+                returnKeyType={index < 2 ? "next" : "done"}
+                onSubmitEditing={() => {
+                  if (index < 2) {
+                    inputRefs.current[index + 1]?.focus();
+                  }
+                }}
+              />
+              <Text style={styles.characterCount}>
+                {habits[index]?.length || 0}/{MAX_CHARACTERS}
+              </Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: "center",
+    paddingBottom: Responsive.v.xxxl,
   },
   questionText: {
     fontSize: Responsive.f.xxxl,
@@ -86,4 +135,3 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.slackside,
   },
 });
-

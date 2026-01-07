@@ -79,6 +79,15 @@ export default function WeeklyCalendar({
   const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   const timeSlots = [
+    "12 AM",
+    "1 AM",
+    "2 AM",
+    "3 AM",
+    "4 AM",
+    "5 AM",
+    "6 AM",
+    "7 AM",
+    "8 AM",
     "9 AM",
     "10 AM",
     "11 AM",
@@ -88,6 +97,12 @@ export default function WeeklyCalendar({
     "3 PM",
     "4 PM",
     "5 PM",
+    "6 PM",
+    "7 PM",
+    "8 PM",
+    "9 PM",
+    "10 PM",
+    "11 PM",
   ];
 
   const parseTime = (timeStr: string): number => {
@@ -162,6 +177,7 @@ export default function WeeklyCalendar({
       date.getFullYear() === today.getFullYear()
     );
   };
+  console.log(sessions);
 
   return (
     <View style={styles.container}>
@@ -465,7 +481,7 @@ export default function WeeklyCalendar({
                 <Text style={styles.tooltipTitle}>{selectedSession.title}</Text>
               )}
               <View style={styles.tooltipActions}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={styles.tooltipButton}
                   onPress={() => {
                     if (selectedSession && onEditSession) {
@@ -475,7 +491,7 @@ export default function WeeklyCalendar({
                   }}
                 >
                   <Text style={styles.tooltipButtonText}>Edit</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity
                   style={[styles.tooltipButton, styles.tooltipButtonSecondary]}
                   onPress={() => {
@@ -776,7 +792,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   tooltipButtonSecondary: {
-    backgroundColor: Colors.lightGray,
+    backgroundColor: Colors.logoutRed,
   },
   tooltipButtonText: {
     fontSize: Responsive.f.md,
@@ -785,7 +801,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.avenir.heavy,
   },
   tooltipButtonTextSecondary: {
-    color: Colors.darkGray,
+    color: Colors.white,
   },
   // Month Picker Modal Styles
   modalOverlay: {
