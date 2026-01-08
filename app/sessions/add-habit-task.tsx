@@ -4,7 +4,10 @@ import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HabitTaskInput from "../../components/habit-task/HabitTaskInput";
-import { OnboardingButton, ProgressIndicator } from "../../components/onboarding";
+import {
+  OnboardingButton,
+  ProgressIndicator,
+} from "../../components/onboarding";
 import Screen5 from "../../components/onboarding/Screen5";
 import Screen6 from "../../components/onboarding/Screen6";
 import Screen7 from "../../components/onboarding/Screen7";
@@ -15,6 +18,7 @@ import {
 } from "../../utils/notifications";
 import { Responsive, rVerticalScale } from "../../utils/responsive";
 import { saveSession, formatDate, Session } from "../../utils/sessions";
+import { getWeekStartDate } from "../../utils/streak";
 
 const DAYS = [
   "Monday",
@@ -32,15 +36,8 @@ interface DaySchedule {
   time?: { hour: number; minute: number; period: "AM" | "PM" };
 }
 
-// Get current week start (Monday)
-const getCurrentWeekStart = () => {
-  const today = new Date();
-  const day = today.getDay();
-  const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
-  const monday = new Date(today.setDate(diff));
-  monday.setHours(0, 0, 0, 0);
-  return monday;
-};
+// Get current week start (Monday) - uses utility function from streak.ts
+const getCurrentWeekStart = () => getWeekStartDate();
 
 export default function AddHabitTask() {
   const router = useRouter();
@@ -53,9 +50,9 @@ export default function AddHabitTask() {
   const [selectedDays, setSelectedDays] = useState<DaySchedule[]>(
     DAYS.map((day) => ({ day, selected: false }))
   );
-  const [currentDayEditing, setCurrentDayEditing] = useState<string | undefined>(
-    undefined
-  );
+  const [currentDayEditing, setCurrentDayEditing] = useState<
+    string | undefined
+  >(undefined);
   const [selectedTime, setSelectedTime] = useState<{
     hour: number;
     minute: number;
@@ -71,9 +68,7 @@ export default function AddHabitTask() {
     } else if (currentStep === 2) {
       // From day selection to time setting
       // Find first selected day that doesn't have a time set
-      const firstUnsetDay = selectedDays.find(
-        (d) => d.selected && !d.time
-      );
+      const firstUnsetDay = selectedDays.find((d) => d.selected && !d.time);
       if (firstUnsetDay) {
         setCurrentDayEditing(firstUnsetDay.day);
         // Load existing time for this day if it has one, otherwise use default
@@ -91,9 +86,7 @@ export default function AddHabitTask() {
     } else if (currentStep === 3) {
       // From time setting - save time for current day
       const updatedDays = selectedDays.map((day) =>
-        day.day === currentDayEditing
-          ? { ...day, time: selectedTime }
-          : day
+        day.day === currentDayEditing ? { ...day, time: selectedTime } : day
       );
       setSelectedDays(updatedDays);
 
@@ -218,11 +211,7 @@ export default function AddHabitTask() {
     switch (currentStep) {
       case 1:
         return (
-          <HabitTaskInput
-            type={type}
-            value={name}
-            onChangeText={setName}
-          />
+          <HabitTaskInput type={type} value={name} onChangeText={setName} />
         );
       case 2:
         return (
@@ -250,18 +239,11 @@ export default function AddHabitTask() {
         );
       case 4:
         return (
-          <Screen7
-            selectedDays={selectedDays}
-            weekStartDate={weekStartDate}
-          />
+          <Screen7 selectedDays={selectedDays} weekStartDate={weekStartDate} />
         );
       default:
         return (
-          <HabitTaskInput
-            type={type}
-            value={name}
-            onChangeText={setName}
-          />
+          <HabitTaskInput type={type} value={name} onChangeText={setName} />
         );
     }
   };
@@ -314,4 +296,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-

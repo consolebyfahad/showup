@@ -24,6 +24,7 @@ import {
 } from "../../utils/notifications";
 import { Responsive, rVerticalScale } from "../../utils/responsive";
 import { saveSession, formatDate, Session } from "../../utils/sessions";
+import { getWeekStartDate } from "../../utils/streak";
 
 const DAYS = [
   "Monday",
@@ -35,15 +36,8 @@ const DAYS = [
   "Sunday",
 ];
 
-// Get current week start (Monday)
-const getCurrentWeekStart = () => {
-  const today = new Date();
-  const day = today.getDay();
-  const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
-  const monday = new Date(today.setDate(diff));
-  monday.setHours(0, 0, 0, 0);
-  return monday;
-};
+// Get current week start (Monday) - uses utility function from streak.ts
+const getCurrentWeekStart = () => getWeekStartDate();
 
 export default function Onboarding() {
   const router = useRouter();
@@ -111,10 +105,12 @@ export default function Onboarding() {
       try {
         // Clear previous streak and vision board data for fresh start
         const { resetStreak } = await import("../../utils/streak");
-        const { setCurrentVisionBoard } = await import("../../utils/visionBoard");
+        const { setCurrentVisionBoard } = await import(
+          "../../utils/visionBoard"
+        );
         await resetStreak();
         await setCurrentVisionBoard(null);
-        
+
         // Save onboarding completion status
         await AsyncStorage.setItem("@yo_twin_onboarding_complete", "true");
 

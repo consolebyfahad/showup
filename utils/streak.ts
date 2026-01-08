@@ -12,14 +12,15 @@ export interface StreakData {
 
 /**
  * Get current week start date (Monday)
+ * Returns a new Date object set to the Monday of the week containing the given date
  */
 export function getWeekStartDate(date: Date = new Date()): Date {
   const d = new Date(date);
-  const day = d.getDay();
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
-  const monday = new Date(d.setDate(diff));
-  monday.setHours(0, 0, 0, 0);
-  return monday;
+  const day = d.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  const diff = day === 0 ? -6 : 1 - day; // Days to subtract to get to Monday
+  d.setDate(d.getDate() + diff);
+  d.setHours(0, 0, 0, 0);
+  return d;
 }
 
 /**

@@ -3,8 +3,7 @@ import { Redirect } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { Colors } from "../constants/colors";
-
-const ONBOARDING_KEY = "@yo_twin_onboarding_complete";
+import { StorageKeys } from "../constants/storage";
 
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,9 +15,10 @@ export default function Index() {
 
   const checkOnboardingStatus = async () => {
     try {
-      const value = await AsyncStorage.getItem(ONBOARDING_KEY);
+      const value = await AsyncStorage.getItem(StorageKeys.ONBOARDING_COMPLETE);
       setHasCompletedOnboarding(value === "true");
     } catch (error) {
+      console.error("Error checking onboarding status:", error);
       setHasCompletedOnboarding(false);
     } finally {
       setIsLoading(false);

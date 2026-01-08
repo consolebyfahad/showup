@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const SESSIONS_KEY = "@yo_twin_sessions";
+import { StorageKeys } from "../constants/storage";
 
 export interface Session {
   id: string;
@@ -19,12 +18,13 @@ export interface Session {
  */
 export async function getAllSessions(): Promise<Session[]> {
   try {
-    const sessionsJson = await AsyncStorage.getItem(SESSIONS_KEY);
+    const sessionsJson = await AsyncStorage.getItem(StorageKeys.SESSIONS);
     if (!sessionsJson) {
       return [];
     }
     return JSON.parse(sessionsJson);
   } catch (error) {
+    console.error("Error getting all sessions:", error);
     return [];
   }
 }
@@ -43,8 +43,9 @@ export async function saveSession(session: Session): Promise<void> {
       sessions.push(session);
     }
 
-    await AsyncStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
+    await AsyncStorage.setItem(StorageKeys.SESSIONS, JSON.stringify(sessions));
   } catch (error) {
+    console.error("Error saving session:", error);
     throw error;
   }
 }
@@ -56,8 +57,9 @@ export async function deleteSession(sessionId: string): Promise<void> {
   try {
     const sessions = await getAllSessions();
     const filtered = sessions.filter((s) => s.id !== sessionId);
-    await AsyncStorage.setItem(SESSIONS_KEY, JSON.stringify(filtered));
+    await AsyncStorage.setItem(StorageKeys.SESSIONS, JSON.stringify(filtered));
   } catch (error) {
+    console.error("Error deleting session:", error);
     throw error;
   }
 }
